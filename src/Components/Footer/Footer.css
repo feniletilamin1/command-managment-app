@@ -1,0 +1,11 @@
+.footer {
+    background-color: #363740;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.footer__copyright {
+    font-family: "Mulish";
+    font-size: 20px;
+}

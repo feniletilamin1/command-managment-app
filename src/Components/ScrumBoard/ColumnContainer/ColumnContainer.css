@@ -1,0 +1,104 @@
+.scrum-board__column {
+    background: #363740;
+    width: 350px;
+    height: 500px;
+    max-height: 500px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.scrum-board__column-content {
+    display: flex;
+    flex-grow: 1;
+    border-top: 2px solid #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+    padding: 20px;
+}
+
+.scrum-board__column-wrapper {
+    cursor: grab;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.scrum-board__column-info-wrapper {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.scrum-board__column-title, .scrum-board__column-tasks-counter, .scrum-board__update-title-input {
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+.scrum-board__column-title {
+    display: inline-block;
+    cursor: text;
+    max-width: 230px;
+    padding: 10px;
+}
+
+.scrum-board__column-tasks-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #454547;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.scrum-board__column-wrapper:hover  .scrum-board__column-wrapper.parent{
+    background-color: red;
+}
+
+.scrum-board__column--dragged {
+    border: 3px solid #2c47f5;
+}
+
+.scrum-board__update-title-input {
+    background-color: #363740;
+    border: none;
+    outline: none;
+    padding: 0;
+    border: 2px solid #2c47f5;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.scrum-board__column-footer {
+    padding: 10px 20px;
+}
+
+.scrum-board__column-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.scrum-board__column-content {
+    overflow-y: auto;
+}
+
+.scrum-board__column-content::-webkit-scrollbar {
+    width: 10px;
+ }
+
+.scrum-board__column-content::-webkit-scrollbar-track {
+  background-color: #363740;
+}
+
+.scrum-board__column-content::-webkit-scrollbar-thumb {
+  background: #2c47f5;
+  border-radius: 25px;
+}
+
+
+

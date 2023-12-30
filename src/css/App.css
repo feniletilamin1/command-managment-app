@@ -1,0 +1,37 @@
+@font-face {
+    font-family: 'Mulish';
+    src: url('../fonts/Mulish-Bold.ttf');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Mulish';
+    src: url('../fonts/Mulish-Regular.ttf');
+    font-weight: 400;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow: auto;
+    background-color: #F7F8FC;
+}
+
+.main {
+	min-height: calc(100vh - 60px);
+}
+
+html::-webkit-scrollbar {
+    width: 10px; 
+ }
+
+html::-webkit-scrollbar-track {
+  background-color: #363740;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #2c47f5;
+  border-radius: 25px;
+}

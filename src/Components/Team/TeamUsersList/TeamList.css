@@ -1,0 +1,14 @@
+/* Стили для руководителя команды и участников команды */
+.team__members {
+    font-family: 'Mulish';
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.team__member-info {
+    margin-top: 20px;
+}
+
+.team__member {
+    list-style: none;
+}

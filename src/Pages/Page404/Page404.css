@@ -1,0 +1,40 @@
+.error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.error-page__content {
+    text-align: center;
+}
+
+.error-page__title {
+    font-family: "Mulish";
+    font-size: 6rem;
+    color: #e74c3c;
+    margin: 0;
+}
+
+.error-page__message {
+    font-family: "Mulish";
+
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.error-page__link {
+    font-family: "Mulish";
+    display: inline-block;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #4b4bf5;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.error-page__link:hover {
+    background-color: #6b6beb;
+}

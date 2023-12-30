@@ -1,0 +1,54 @@
+.add-team-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+  }
+  
+  .add-team-form__label {
+    font-family: "Mulish";
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+  }
+  
+  .add-team-form__input {
+    font-family: "Mulish";
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .add-team-form__input--textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .add-team-form__button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .add-team-form__button:hover {
+    background-color: #075cb7;
+  }
+
+.add-team-form-error {
+    color: red;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+  

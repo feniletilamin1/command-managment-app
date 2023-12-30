@@ -1,0 +1,45 @@
+/* Стили для названия команды и описания команды */
+
+.team__description {
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: 'Mulish';
+    margin-bottom: 20px;
+}
+
+/* Стили для кнопок */
+.team__button {
+    font-size: 16px;
+    padding: 10px 20px;
+    font-family: 'Mulish';
+    border: none;
+    cursor: pointer;
+}
+
+.team__button--edit {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Стили для пригласительной ссылки */
+.team__invite-link {
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: 'Mulish';
+}
+
+.team__button--delete {
+    background-color: #e11010;
+    color: #fff;
+}
+
+.team__buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+    max-width: 280px;
+    margin-bottom: 30px;
+}
+
+
+
+

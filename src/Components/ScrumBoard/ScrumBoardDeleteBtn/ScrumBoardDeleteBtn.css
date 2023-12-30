@@ -1,0 +1,17 @@
+.scrum-board__column-delete-btn {
+    cursor: pointer;
+    background-color: #363740;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.scrum-board__column-delete-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.scrum-board__column-delete-btn:hover svg path{
+    fill: #7b7b7b;
+    stroke: #7b7b7b;
+    transition: all .2s ease;
+}

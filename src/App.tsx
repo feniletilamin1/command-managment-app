@@ -1,26 +1,67 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './css//App.css';
+import LoginPage from './Pages/LoginPage';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import HomePage from './Pages/HomePage/HomePage';
+import RegisterPage from './Pages/RegisterPage';
+import {useEffect } from 'react';
+import ProjectsPage from './Pages/ProjectsPage';
+import Header from './Components/Header/Header';
+import Preloader from './Components/Preloader/Preloader';
+import ProfilePage from './Pages/ProfilePage';
+import Footer from './Components/Footer/Footer';
+import TeamsPage from './Pages/TeamsPage';
+import TeamPage from './Pages/TeamPage';
+import { useAppDispatch, useAppSelector } from './app/hook';
+import { getUserAsync } from './app/slices/userSlice';
+import AddTeamPage from './Pages/AddTeamPage';
+import { useUserCookies } from './hooks/useUserCokies';
+import Page404 from './Pages/Page404/Page404';
+import UpdateTeamPage from './Pages/UpdateTeamPage';
+import { getTeamsAsync } from './app/slices/teamSlice';
+import InviteTeamPage from './Pages/InviteTeamPage';
+import ScrumBoardPage from './Pages/ScrumBoardPage';
 
-function App() {
+export default function App() {
+  const dispatch = useAppDispatch();
+  const {user, isLoading, Error} = useAppSelector((state) => state.user);
+
+  const token = useUserCookies();
+
+  useEffect(() => {
+    if(token) {
+      dispatch(getUserAsync());
+      dispatch(getTeamsAsync())
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {Error && <p>Ошибка: {Error}</p>}
+      {isLoading && <Preloader fixed={true}/>}
+      {!isLoading && !Error &&
+      <BrowserRouter>
+          <Header />
+          <main className="main">
+            <Routes>
+                <Route index element={<HomePage user={user}/>} />
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/projects" element={<ProjectsPage />}/>
+                <Route path="/register" element={<RegisterPage />}/>
+                <Route path="/profile" element={<ProfilePage/>}/>
+                <Route path="/teams" element={<TeamsPage />}/>
+                <Route path="/teams/team/:teamId" element={<TeamPage />}/>
+                <Route path="/teams/newTeam/" element={<AddTeamPage />}/>
+                <Route path="/teams/updateTeam/:teamId" element={<UpdateTeamPage />}/>
+                <Route path="/inviteToTeam/:token" element={<InviteTeamPage />} />
+                <Route path="*" element={<Page404 />}/>
+                <Route path="/board/:projectId" element={<ScrumBoardPage />}/>
+            </Routes>
+          </main>
+          <Footer />
+      </BrowserRouter>}
+    </>
   );
 }
 
-export default App;

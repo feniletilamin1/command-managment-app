@@ -1,0 +1,43 @@
+.scrum-board {
+    margin: auto;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+}
+
+.scrum-board::-webkit-scrollbar {
+    height: 10px;
+ }
+
+.scrum-board::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+
+.scrum-board::-webkit-scrollbar-thumb {
+  background: #2c47f5;
+  border-radius: 25px;
+}
+
+.scrum-board__wrapper {
+    margin: auto;
+    display: flex;
+    column-gap: 10px;
+}
+
+.scrum-board__container {
+    display: flex;
+    column-gap: 20px;
+}
+
+.plusIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 20px;
+}
+
+.plusIcon path {
+    fill: white;
+}

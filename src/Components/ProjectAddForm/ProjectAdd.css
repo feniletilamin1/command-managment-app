@@ -1,0 +1,98 @@
+@keyframes showForm {
+    0%{
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.project-form-container {
+    display: none;
+    opacity: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.project-form-container--active {
+    display: flex;
+    animation: showForm .5s forwards;
+}
+
+.project-form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding: 20px;
+    width: 400px;
+    text-align: center;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-form__input {
+    font-family: 'Mulish';
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-weight: 400;
+}
+
+.project-form__label{
+    font-family: 'Mulish';
+    margin-bottom: 10px;
+    margin-top: 20px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.project__form-submit {
+    font-family: 'Mulish';
+    background-color: #0079bf;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 35px;
+}
+
+.project-form-container__cross {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    cursor: pointer;
+}
+
+.project-form-container__cross::before,  
+.project-form-container__cross::after { 
+    position: absolute;
+    content: "";
+    display: block;
+    width: 30px;
+    height: 2px;
+    background-color: black;
+    top: 13px;
+}
+
+
+.project-form-container__cross::before { 
+    transform: rotate(45deg);
+}
+
+.project-form-container__cross::after { 
+    transform: rotate(-45deg);
+}
