@@ -38,6 +38,7 @@ export default function ScrumBoardPage() {
         .catch(function (error: AxiosError) {
             setError(error.message);
             console.log(error);
+            navigate("/404");
         })
         .finally (function () {
             setLoading(false);
@@ -47,9 +48,6 @@ export default function ScrumBoardPage() {
 
     return (
         <Layout title="Scrum Board">
-            {!loading && error &&
-                <p>Ошибка: {error}</p>
-            }
             {token && loading && !error && <Preloader fixed={false}/>}
             {token && !loading && !error && scrumBoard && <ScrumBoard {...scrumBoard} /> }
         </Layout>   

@@ -1,10 +1,35 @@
 .teams {
     display: flex;
     flex-wrap: wrap;
+    gap: 25px;
+}
+
+@media screen and (max-width: 1270px) {
+    .teams {
+        gap: 26px;
+    }
+    
+} 
+
+@media screen and (max-width: 1050px) {
+    .teams {
+        gap: 54px;
+    }
+    
 }
 
 @media screen and (max-width: 820px){
     .teams {
-        justify-content: space-between;
+        gap: 43px;
     }
+    
+}
+
+
+@media screen and (max-width: 620px) {
+    .teams {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+    }    
 }

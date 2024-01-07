@@ -19,7 +19,6 @@ export default function Search(props: SearchProps) {
         if(searchText !== "") {
             let newItems: ProjectType[] = structuredClone(items);
             newItems = newItems.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()));
-            console.log(newItems);
             setItems(newItems);
         }
         else {

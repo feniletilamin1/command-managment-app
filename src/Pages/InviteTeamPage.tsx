@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { InviteTeamDto, MessageResponseType } from "../Types/ResponseTypes";
+import {MessageResponseType } from "../Types/ResponseTypes";
 import Cookies from "universal-cookie";
 import { useAppDispatch } from "../app/hook";
 import { getTeamsAsync } from "../app/slices/teamSlice";
@@ -23,14 +23,10 @@ export default function InviteTeamPage() {
             navigate("404");
             return;
         }
-        
-        const data: InviteTeamDto = {
-            token,
-            userEmail: email,
-        }
+    
 
         setLoading(true);
-        axios.post('https://localhost:7138/api/Teams/InviteUserToTeam/', data, 
+        axios.post('https://localhost:7138/api/Teams/InviteUserToTeam/', token, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

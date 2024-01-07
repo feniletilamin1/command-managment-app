@@ -7,9 +7,9 @@
     }
 }
 
-
 .header__menu-wrapper {
     display: flex;
+    align-items: center;
 }
 
 .menu {

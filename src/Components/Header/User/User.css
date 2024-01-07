@@ -16,3 +16,21 @@
 .header-user__link:not(:last-child) {
     margin-right: 20px;
 }
+
+.header__logout-btn {
+    padding: 5px 15px;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff; /* цвет текста */
+    background-color: #3751ff; /* основной цвет кнопки */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.header__logout-btn:hover {
+    background-color: #4e65f8; /* цвет кнопки при наведении */
+}

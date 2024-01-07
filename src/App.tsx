@@ -32,7 +32,6 @@ export default function App() {
       dispatch(getUserAsync());
       dispatch(getTeamsAsync())
     }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -2,7 +2,7 @@ import {PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {TeamStateType } from "../../Types/StoreTypes";
 import axios, { AxiosError } from "axios";
 import { TeamCardType } from "../../Types/ModelsType";
-import {MessageResponseType } from "../../Types/ResponseTypes";
+import {MessageResponseType, TeamDto } from "../../Types/ResponseTypes";
 import { useUserCookies } from "../../hooks/useUserCokies";
 
 const initialState: TeamStateType = {
@@ -47,6 +47,10 @@ export const teamSlice = createSlice({
             state.Error = null;
             state.cards = [];
             state.isLoading = false;
+        },
+        updateTeam: (state, action:PayloadAction<TeamDto>) => {
+            const teamIndex = state.cards.findIndex(p => p.id == action.payload.id);
+            state.cards[teamIndex].teamName = action.payload.teamName!;
         }
     },
     extraReducers: (builder) => {
@@ -67,6 +71,6 @@ export const teamSlice = createSlice({
     }
 });
 
-export const { addTeam, deleteTeam, clearTeams} = teamSlice.actions;
+export const { addTeam, deleteTeam, clearTeams, updateTeam} = teamSlice.actions;
 
 export default teamSlice.reducer;

@@ -51,11 +51,15 @@ export default function ColumnContainer (props: ColumnContainerProps) {
             <div className="scrum-board__column-wrapper" {...attributes} {...listeners}>
                 <div className="scrum-board__column-info-wrapper">
                     <span className="scrum-board__column-tasks-counter">{tasks.length}</span>
-                    <h2 onClick={() => {setEditMode(true); }} className="scrum-board__column-title">
+                    <h2 onClick={() => {
+                        if(column.name !== 'В работе' && column.name !== 'Сделать' &&  column.name !== 'Сделано') {
+                            setEditMode(true);
+                        }
+                    }} className="scrum-board__column-title">
                         {!editMode && column.name}
                         {editMode && <input ref={columnInputName} className="scrum-board__update-title-input" 
                             defaultValue={column.name} autoFocus onBlur={() => setEditMode(false)} onKeyDown={(e) => {
-                            if(e.key === "Enter") {
+                            if(e.key === "Enter" && column.name !== 'В работе' && column.name !== 'Сделать' &&  column.name !== 'Сделано' && column.name !== "") {
                                 updateColumn(column.id, columnInputName.current!.value);
                             }
                             else {

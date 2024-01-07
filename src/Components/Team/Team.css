@@ -16,7 +16,7 @@
     cursor: pointer;
 }
 
-.team__button--edit {
+.team__button--blue {
     background-color: #007bff;
     color: #fff;
 }
@@ -28,7 +28,7 @@
     font-family: 'Mulish';
 }
 
-.team__button--delete {
+.team__button--red {
     background-color: #e11010;
     color: #fff;
 }
@@ -40,6 +40,10 @@
     margin-bottom: 30px;
 }
 
-
-
+.team__invite-link {
+    margin: 20px 0;
+    font-size: 16px;
+    font-family: 'Mulish';
+    word-break: break-all;
+}
 

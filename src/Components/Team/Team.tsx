@@ -14,8 +14,8 @@ type TeamProps = {
     team: TeamType,
 }
 
-async function generateInviteLink(token: string, teamId: number, userEmail: string):Promise<string> {
-    const response = await axios.get<string>(`https://localhost:7138/api/Teams/GetInviteLink/${teamId}/${userEmail}`, 
+async function generateInviteLink(token: string, teamId: number):Promise<string> {
+    const response = await axios.get<string>(`https://localhost:7138/api/Teams/GetInviteLink/${teamId}`, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -38,10 +38,13 @@ export default function Team (props: TeamProps) {
     const [inviteLink, setInviteLink] = useState<string | null>(null);
 
     const getInviteLinkHandler = async () => {
-        setInviteLink(await generateInviteLink(token!, team.id, user!.email));
-        await navigator.clipboard.writeText(inviteLink ? inviteLink: "");
-        alert("Скопировано в буфер обмена");
+        setInviteLink(await generateInviteLink(token!, team.id));
     }
+
+    const copyInviteLink = async () => {
+        await navigator.clipboard.writeText(inviteLink!);
+        alert("Скопировано в буфер обмена");
+    };
 
    const deleteTeamHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -75,14 +78,17 @@ export default function Team (props: TeamProps) {
                 <div className="team">
                     {user && user.id === team.createUserId && 
                         <div className="team__buttons-wrapper">
-                            <Link to={`/teams/updateTeam/${team.id}`} className="team__button team__button--edit">Редактировать</Link>
+                            <Link to={`/teams/updateTeam/${team.id}`} className="team__button team__button--blue">Редактировать</Link>
                             <form onSubmit={deleteTeamHandler} className="team__form">
-                                <button className="team__button team__button--delete">Удалить</button>
+                                <button className="team__button team__button--red">Удалить</button>
                             </form>
                         </div>
                     }
                     <p className="team__description">Описание: {team.teamDescription}</p>
-                    {user && user.id === team.createUserId && <button onClick={getInviteLinkHandler} className="team__button team__button--edit">Получить пригласительную ссылку</button>}
+                    {user && user.id === team.createUserId && <button onClick={getInviteLinkHandler} className="team__button team__button--blue">Получить пригласительную ссылку</button>}
+                    {inviteLink && <p className="team__invite-link">Пригласительная ссылка: </p> }
+                    {inviteLink && <p className="team__invite-link">{inviteLink}</p> }
+                    {inviteLink && <button onClick={copyInviteLink} className="team__button team__button--blue">Скопировать</button> }
                     <h2 className="team__members">Состав команды</h2>
                     <TeamUsersList users={team.users}/>
                 </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Id, TaskType } from '../../../Types/ScrumBoardTypes';
 import ScrumBoardDeleteBtn from '../ScrumBoardDeleteBtn/ScrumBoardDeleteBtn';
 import './TaskCard.css';
@@ -16,6 +16,8 @@ export default function TaskCard(props: TaskCardProps) {
     const { task, deleteTask, updateTask } = props;
     const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
+    const taskContentTArea = useRef<HTMLTextAreaElement | null>(null);
+
     
     const {setNodeRef, attributes, listeners, transform, transition, isDragging} = useSortable({
         id: task.id,
@@ -45,10 +47,13 @@ export default function TaskCard(props: TaskCardProps) {
     if(editMode) {
         return (
             <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="scrum-board__task-card">
-                <textarea onKeyDown={e => {
+                <textarea ref={taskContentTArea} onKeyDown={e => {
                     if(e.key === "Enter" && e.shiftKey) return;
-                    else if(e.key === "Enter") toggleEditMode();
-                }} value={task.content} autoFocus onBlur={toggleEditMode} onChange={e => updateTask(task.id, e.target.value)} className="scrum-board__task-card-textarea"></textarea>
+                    else if(e.key === "Enter" && taskContentTArea.current!.value !== "") {
+                        toggleEditMode();
+                        updateTask(task.id, taskContentTArea.current!.value)
+                    }
+                }} defaultValue={task.content} autoFocus onBlur={toggleEditMode} className="scrum-board__task-card-textarea"></textarea>
             </div>
         )
     }

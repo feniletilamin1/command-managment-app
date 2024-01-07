@@ -1,5 +1,4 @@
 import { TeamType, UserType } from "./ModelsType";
-import { ColumnType } from "./ScrumBoardTypes";
 
 export type LoginProfileResponce = {
     jwt: string,
@@ -27,13 +26,5 @@ export type AddProjectDto = {
     teamName: string,
 }
 
-export type InviteTeamDto = {
-    token: string,
-    userEmail: string,
-}
-
-export type ScrumBoardColumnsMoveDto = {
-    newColumns: ColumnType[],
-}
 
 

@@ -1,4 +1,4 @@
-import { TeamCardType, TeamType, UserType } from "./ModelsType"
+import { TeamCardType, UserType } from "./ModelsType"
 
 export type UserStateType = {
     user: UserType | null

@@ -75,33 +75,9 @@
     margin-bottom: 25px;
 }
 
-.teams__card-link:not(:nth-child(5n)) {
-    margin-right: 25px;
-}
-
-
-
 @media screen and (max-width: 1270px) {
     .team-card {
         width: 220px;
-    }
-    
-    .teams__card-link:not(:nth-child(5n)) {
-        margin-right: 0px;
-    }
-
-    .teams__card-link:not(:nth-child(4n)) {
-        margin-right: 26px;
-    }
-}
-
-@media screen and (max-width: 1050px) {
-    .teams__card-link:not(:nth-child(4n)) {
-        margin-right: 0px;
-    }
-
-    .teams__card-link:not(:nth-child(3n)) {
-        margin-right: 54px;
     }
 }
 
@@ -112,18 +88,9 @@
     
     .teams .team-card{
         padding: 40px;
-        height: auto;
     }
 
-    .teams__card-link:not(:nth-child(3n)) {
-        margin-right: 0px;
-    }
-
-    .teams__card-link:not(:nth-child(2n)) {
-        margin-right: 43px;
-    }
 }
-
 
 @media screen and (max-width: 620px) {
     .team-card {
@@ -132,10 +99,6 @@
 
     .teams__card-link {
         width: 100%;
-    }
-
-    .teams__card-link:not(:nth-child(2n)) {
-        margin-right: 0;
     }
 }
 

@@ -9,7 +9,7 @@ import ScrumBoardAddBtn from './ScrumBoardAddBtn/ScrumBoardAddBtn';
 import TaskCard from './TaskCard/TaskCard';
 import axios, { AxiosError } from 'axios';
 import { useUserCookies } from '../../hooks/useUserCokies';
-import { MessageResponseType, ScrumBoardColumnsMoveDto } from '../../Types/ResponseTypes';
+import { MessageResponseType } from '../../Types/ResponseTypes';
 import uuid from 'react-uuid';
 
 
@@ -20,7 +20,9 @@ export default function ScrumBoard (props: ScrumBoardType) {
     const [tasks, setTasks] = useState<TaskType[]>(props.scrumBoardTasks);
     const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null);
     const [activeTask, setActiveTask] = useState<TaskType | null>(null);
-    const [disableUpdate, setDisableUpdate] = useState<boolean>(true);
+    const [disableColumnUpdate, setDisableColumnUpdate] = useState<boolean>(true);
+    const [disableTaskUpdate, setDisableTaskUpdate] = useState<boolean>(true);
+
     
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -31,16 +33,12 @@ export default function ScrumBoard (props: ScrumBoardType) {
     )
 
     useEffect(() => {
-           if(!disableUpdate) {
+           if(!disableColumnUpdate) {
             columns.forEach((obj, index) => {
                 obj.order = index;
             });
 
-            const columnsMoveDto: ScrumBoardColumnsMoveDto = {
-                newColumns: columns,
-            }
-
-            axios.post('https://localhost:7138/api/ScrumBoard/ColumnsMove/', columnsMoveDto, 
+            axios.put('https://localhost:7138/api/ScrumBoard/ColumnsMove/', columns, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -50,9 +48,30 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 console.log(error.response);
             })
            }
-           else setDisableUpdate(false);
+           else setDisableColumnUpdate(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps       
     }, [columns]);
+
+     useEffect(() => {
+           if(!disableTaskUpdate) {
+            tasks.forEach((obj, index) => {
+                obj.order = index;
+            });
+
+            axios.put('https://localhost:7138/api/ScrumBoard/TasksMove', tasks, 
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .catch(function (error:AxiosError<MessageResponseType>) {
+                console.log(error.response);
+            })
+           }
+           else setDisableTaskUpdate(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps       
+    }, [tasks]);
+
 
     return (
         <div className="scrum-board">
@@ -91,6 +110,8 @@ export default function ScrumBoard (props: ScrumBoardType) {
             scrumBoardId: props.id,
         }
 
+        setDisableColumnUpdate(true);
+
         axios.post<ColumnType>('https://localhost:7138/api/ScrumBoard/ColumnAdd/', columnToAdd, 
         {
             headers: {
@@ -106,12 +127,10 @@ export default function ScrumBoard (props: ScrumBoardType) {
         })
     }
 
-    function deleteColumn(id: Id) {
-        const filteredColumns = columns.filter(col => col.id !== id);
+    function deleteColumn(columnId: Id) {
+        const filteredColumns = columns.filter(col => col.id !== columnId);
 
-        const deletedColumn = columns.find(col => col.id === id);
-
-        axios.post('https://localhost:7138/api/ScrumBoard/ColumnDelete/', deletedColumn, 
+        axios.delete('https://localhost:7138/api/ScrumBoard/ColumnDelete/' + columnId, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -123,7 +142,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         setColumns(filteredColumns);
 
-        const newTasks = tasks.filter(task => task.scrumBoardColumnId !== id);
+        const newTasks = tasks.filter(task => task.scrumBoardColumnId !== columnId);
 
         setTasks(newTasks);
     }
@@ -155,6 +174,8 @@ export default function ScrumBoard (props: ScrumBoardType) {
             
             const overColumnIndex = columns.findIndex(column => column.id === overColumnId);
 
+            setDisableColumnUpdate(false);
+
             return arrayMove(columns, activeColumnIndex, overColumnIndex);
         })
 
@@ -167,13 +188,13 @@ export default function ScrumBoard (props: ScrumBoardType) {
         })
 
         setColumns(newColumns);
-        setDisableUpdate(true);
+        setDisableColumnUpdate(true);
 
         const updatedColumn = columns.find(col => col.id === id);
 
         updatedColumn!.name = name;
 
-        axios.post('https://localhost:7138/api/ScrumBoard/ColumnUpdate/', updatedColumn, 
+        axios.put('https://localhost:7138/api/ScrumBoard/ColumnUpdate/', updatedColumn, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -192,8 +213,6 @@ export default function ScrumBoard (props: ScrumBoardType) {
             scrumBoardId: props.id,
             order: tasks.length,
         }
-
-        console.log(scrumBoardTask);
     
         axios.post<TaskType>('https://localhost:7138/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
         {
@@ -214,6 +233,16 @@ export default function ScrumBoard (props: ScrumBoardType) {
     function deleteTask(taskId: Id) {
         const newTasks = tasks.filter((task) => task.id !== taskId);
 
+        axios.delete('https://localhost:7138/api/ScrumBoard/TaskDelete/' + taskId, 
+        {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .catch(function (error:AxiosError<MessageResponseType>) {
+            console.log(error.response);
+        })
+
         setTasks(newTasks);
     }
 
@@ -224,6 +253,21 @@ export default function ScrumBoard (props: ScrumBoardType) {
         });
 
         setTasks(newTasks);
+        setDisableTaskUpdate(true);
+
+        const updatedTask = tasks.find(col => col.id === taskId);
+
+        updatedTask!.content = content;
+
+        axios.put('https://localhost:7138/api/ScrumBoard/TaskUpdate/', updatedTask, 
+        {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .catch(function (error:AxiosError<MessageResponseType>) {
+            console.log(error.response);
+        })
     }
 
     function onDragOver(event: DragOverEvent) {
