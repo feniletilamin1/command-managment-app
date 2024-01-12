@@ -27,7 +27,7 @@ export default function AddTeamForm() {
         setLoading(true);
         data.createUserId = user ? user.id : 0;
 
-        axios.post<TeamCardType>('https://localhost:7138/api/Teams/AddTeam/', data, 
+        axios.post<TeamCardType>(process.env.REACT_APP_SERVER_HOST + '/api/Teams/AddTeam/', data, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

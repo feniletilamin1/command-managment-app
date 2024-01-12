@@ -1,14 +1,16 @@
 .profile__edit-form {
     margin-top: 40px;
     display: flex;
-    flex-direction: column;
     font-family: 'Mulish';
     font-style: normal;
     font-weight: 600;
+    justify-content: space-between;
 }
 
 .edit-form {
-    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    width: 550px;
 }
 
 .edit-form__form-group {
@@ -52,8 +54,38 @@
     display: inline-block;
 }
 
-@media screen and (max-width: 820px) {
+@media screen and (max-width: 1270px) {
     .edit-form {
-        max-width: 100%;
+        width: 450px;
     }
 }
+
+@media screen and (max-width: 1050px) {
+    .edit-form {
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 820px){
+    .profile__edit-form {
+        flex-direction: column;
+    }
+
+    .edit-form:not(:last-child) {
+        margin-bottom: 40px;
+    }
+
+    .edit-form {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    
+}
+
+@media screen and (max-width: 440px) {
+    
+}
+
+

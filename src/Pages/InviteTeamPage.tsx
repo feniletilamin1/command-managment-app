@@ -26,7 +26,7 @@ export default function InviteTeamPage() {
     
 
         setLoading(true);
-        axios.post('https://localhost:7138/api/Teams/InviteUserToTeam/', token, 
+        axios.post(process.env.REACT_APP_SERVER_HOST + '/api/Teams/InviteUserToTeam/', token, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

@@ -22,7 +22,7 @@ function RegisterForm() {
 
         data.photo = data.fileList![0];
 
-        axios.post('https://localhost:7138/api/Authenfication/Register', data, {
+        axios.post(process.env.REACT_APP_SERVER_HOST + '/api/Authenfication/Register', data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 }
@@ -85,7 +85,7 @@ function RegisterForm() {
                     })}/>
                     <label className="form-auth__label" htmlFor="Email">Email</label>
                     {errors.email && <span className="form__auth-error-text">{errors.email.message as string }</span>}
-                    <input  type="email" id="Email" className="form-auth__input" {...register('email', {
+                    <input autoComplete="email"  type="email" id="Email" className="form-auth__input" {...register('email', {
                         required: "Укажите email",
                         pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
@@ -94,12 +94,12 @@ function RegisterForm() {
                     })}/>
                     <label className="form-auth__label" htmlFor="Password">Пароль</label>
                     {errors.password && <span className="form__auth-error-text">{errors.password.message as string }</span>}
-                    <input autoComplete="true" type="password" id="Password" className="form-auth__input" {...register("password", {
+                    <input autoComplete="new-password" type="password" id="Password" className="form-auth__input" {...register("password", {
                         required: "Введите пароль"
                     })}/>
                     <label className="form-auth__label" htmlFor="PasswordSecure">Подтверждение пароля</label>
                     {errors.confirmPassword && <span className="form__auth-error-text">{errors.confirmPassword.message as string }</span>}
-                    <input autoComplete="true" type="password" id="PasswordSecure" className="form-auth__input" {...register("confirmPassword", {
+                    <input autoComplete="new-password" type="password" id="PasswordSecure" className="form-auth__input" {...register("confirmPassword", {
                         required: "Подвердите пароль",
                         validate: (val: string) => {
                             if (watch('password') !== val) {

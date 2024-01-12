@@ -15,7 +15,7 @@ type TeamProps = {
 }
 
 async function generateInviteLink(token: string, teamId: number):Promise<string> {
-    const response = await axios.get<string>(`https://localhost:7138/api/Teams/GetInviteLink/${teamId}`, 
+    const response = await axios.get<string>(process.env.REACT_APP_SERVER_HOST + `/api/Teams/GetInviteLink/${teamId}`, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -52,7 +52,7 @@ export default function Team (props: TeamProps) {
         setLoading(true);
         setError(null);
 
-        axios.delete('https://localhost:7138/api/Teams/DeleteTeam/' + team.id, 
+        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/Teams/DeleteTeam/' + team.id, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

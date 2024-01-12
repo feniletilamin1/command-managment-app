@@ -20,7 +20,7 @@ export const getUserAsync = createAsyncThunk(
      async (_, {rejectWithValue}) => {
         const token = useUserCookies();
         try {
-            const response = await axios.get<UserType>('https://localhost:7138/api/Authenfication/GetUser/', 
+            const response = await axios.get<UserType>(process.env.REACT_APP_SERVER_HOST + '/api/Authenfication/GetUser/', 
             {
             headers: {
                 'Authorization': 'Bearer ' + token

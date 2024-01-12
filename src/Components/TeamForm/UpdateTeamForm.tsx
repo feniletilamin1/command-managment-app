@@ -30,7 +30,7 @@ export default function UpdateTeamForm(props: TeamTypeProps) {
         data.id = team.id;
         data.createUserId = user ? user.id : 0;
 
-        axios.put('https://localhost:7138/api/Teams/UpdateTeam/', data, 
+        axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Teams/UpdateTeam/', data, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

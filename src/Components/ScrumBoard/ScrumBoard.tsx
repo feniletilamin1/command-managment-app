@@ -38,7 +38,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 obj.order = index;
             });
 
-            axios.put('https://localhost:7138/api/ScrumBoard/ColumnsMove/', columns, 
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnsMove/', columns, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -58,7 +58,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 obj.order = index;
             });
 
-            axios.put('https://localhost:7138/api/ScrumBoard/TasksMove', tasks, 
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TasksMove', tasks, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -112,7 +112,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         setDisableColumnUpdate(true);
 
-        axios.post<ColumnType>('https://localhost:7138/api/ScrumBoard/ColumnAdd/', columnToAdd, 
+        axios.post<ColumnType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnAdd/', columnToAdd, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -130,7 +130,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
     function deleteColumn(columnId: Id) {
         const filteredColumns = columns.filter(col => col.id !== columnId);
 
-        axios.delete('https://localhost:7138/api/ScrumBoard/ColumnDelete/' + columnId, 
+        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnDelete/' + columnId, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -194,7 +194,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         updatedColumn!.name = name;
 
-        axios.put('https://localhost:7138/api/ScrumBoard/ColumnUpdate/', updatedColumn, 
+        axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnUpdate/', updatedColumn, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -214,7 +214,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
             order: tasks.length,
         }
     
-        axios.post<TaskType>('https://localhost:7138/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
+        axios.post<TaskType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -233,7 +233,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
     function deleteTask(taskId: Id) {
         const newTasks = tasks.filter((task) => task.id !== taskId);
 
-        axios.delete('https://localhost:7138/api/ScrumBoard/TaskDelete/' + taskId, 
+        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskDelete/' + taskId, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -259,7 +259,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         updatedTask!.content = content;
 
-        axios.put('https://localhost:7138/api/ScrumBoard/TaskUpdate/', updatedTask, 
+        axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', updatedTask, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

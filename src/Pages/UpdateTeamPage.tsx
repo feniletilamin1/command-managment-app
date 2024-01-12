@@ -27,7 +27,7 @@ export default function AddTeamPage() {
             return;
         }
 
-        axios.get<TeamType>(`https://localhost:7138/api/Teams/GetCurrentTeam/${teamId}`, 
+        axios.get<TeamType>(process.env.REACT_APP_SERVER_HOST + `/api/Teams/GetCurrentTeam/${teamId}`, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

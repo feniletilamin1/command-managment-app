@@ -11,3 +11,9 @@ export type RegisterDto = Omit<Partial <UserType>, "id" | "photo"> & {
     fileList?: FileList,
 }
 
+export type ChangePasswordDto = {
+    oldPassword?: string
+    newPassword?: string,
+    newPasswordMath?: string
+}
+

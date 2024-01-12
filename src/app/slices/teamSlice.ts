@@ -16,7 +16,7 @@ export const getTeamsAsync = createAsyncThunk(
      async (_, {rejectWithValue}) => {
         const token = useUserCookies();
         try {
-            const response = await axios.get<TeamCardType[]>('https://localhost:7138/api/Teams/GetTeams/', 
+            const response = await axios.get<TeamCardType[]>(process.env.REACT_APP_SERVER_HOST + '/api/Teams/GetTeams/', 
             {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -49,7 +49,7 @@ export const teamSlice = createSlice({
             state.isLoading = false;
         },
         updateTeam: (state, action:PayloadAction<TeamDto>) => {
-            const teamIndex = state.cards.findIndex(p => p.id == action.payload.id);
+            const teamIndex = state.cards.findIndex(p => p.id === action.payload.id);
             state.cards[teamIndex].teamName = action.payload.teamName!;
         }
     },

@@ -36,7 +36,7 @@ export default function ProjectsPage() {
             return;
         }
         
-        axios.get<ProjectType[]>('https://localhost:7138/api/Projects/GetProjects/', 
+        axios.get<ProjectType[]>(process.env.REACT_APP_SERVER_HOST + '/api/Projects/GetProjects/', 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

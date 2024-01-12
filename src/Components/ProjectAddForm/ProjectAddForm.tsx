@@ -36,7 +36,7 @@ export default function ProjectAddForm(props: ProjectFormProps) {
             teamId: Number.parseInt(teamSelect.current?.value!),
         }
 
-        axios.post<ProjectType>('https://localhost:7138/api/Projects/AddProject', project, {
+        axios.post<ProjectType>(process.env.REACT_APP_SERVER_HOST + '/api/Projects/AddProject', project, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

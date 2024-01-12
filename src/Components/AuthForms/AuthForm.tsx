@@ -28,7 +28,7 @@ export default function  AuthForm() {
         const expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + 1);
 
-        axios.post<LoginProfileResponce>('https://localhost:7138/api/Authenfication/Login', data)
+        axios.post<LoginProfileResponce>(process.env.REACT_APP_SERVER_HOST + '/api/Authenfication/Login', data)
             .then (function (response) {
                 cookies.set('jwt', response.data.jwt, { expires: expireDate, path: '/' });
 
@@ -61,7 +61,7 @@ export default function  AuthForm() {
                 {errors.root && <span className="form__auth-error-text">{errors.root.serverError.message as string }</span>}
                 <label className="form-auth__label" htmlFor="Email">Email</label>
                 {errors.email && <span className="form__auth-error-text">{errors.email.message as string}</span>}
-                <input type="email" id="Email" className="form-auth__input" {...register('email', {
+                <input autoComplete="email" type="email" id="Email" className="form-auth__input" {...register('email', {
                     required: "Введите email",
                     pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
@@ -70,7 +70,7 @@ export default function  AuthForm() {
                 })}/>
                 <label className="form-auth__label" htmlFor="Password">Пароль</label>
                 {errors.password && <span className="form__auth-error-text">{errors.password?.message as string }</span>}
-                <input autoComplete="true" type="password" id="Password" className="form-auth__input" {...register('password', {
+                <input autoComplete='current-password' type="password" id="Password" className="form-auth__input" {...register('password', {
                     required: "Введите пароль",
                 })}/>
                 <input type="submit" className="form-auth__submit" value="Войти"/>
