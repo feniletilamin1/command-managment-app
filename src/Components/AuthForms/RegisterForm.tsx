@@ -52,11 +52,11 @@ function RegisterForm() {
         <>
             {loading && <Preloader fixed={false}/>}
             {!loading && 
-                <form onSubmit={handleSubmit(formSubmitHanlder)} encType="multipart/form-data" className="form-auth">
+                <form onSubmit={handleSubmit(formSubmitHanlder)} encType="multipart/form-data" className="main-form">
                     {errors.root && <span className="form__auth-error-text">{errors.root.serverError.message as string }</span>}
-                    <label className="form-auth__label" htmlFor="Photo">Фото png, jpeg, bmp, webp</label>
+                    <label className="main-form__label" htmlFor="Photo">Фото png, jpeg, bmp, webp</label>
                     {errors.fileList && <span className="form__auth-error-text">{errors.fileList.message as string }</span>}
-                    <input accept="image/png, image/jpeg, image/bmp, image/webp" type="file" id="Photo" className="form-auth__input" {...register("fileList", {
+                    <input accept="image/png, image/jpeg, image/bmp, image/webp" type="file" id="Photo" className="main-form__input" {...register("fileList", {
                         required: "Загрузите фото",
                         validate: (file: FileList) => {
                             const validateImageResult: string | boolean = imageValidator(file[0]);
@@ -66,40 +66,40 @@ function RegisterForm() {
                             }
                         },
                     })}/>
-                    <label className="form-auth__label" htmlFor="LastName">Фамилия</label>
+                    <label className="main-form__label" htmlFor="LastName">Фамилия</label>
                     {errors.lastName && <span className="form__auth-error-text">{errors.lastName.message as string }</span>}
                     <input type="text" id="LastName" {...register("lastName", {
                         required: "Укажите фамилию"
-                    })} className="form-auth__input"/>
-                    <label className="form-auth__label" htmlFor="FirstName">Имя</label>
+                    })} className="main-form__input"/>
+                    <label className="main-form__label" htmlFor="FirstName">Имя</label>
                     {errors.firstName && <span className="form__auth-error-text">{errors.firstName.message as string }</span>}
-                    <input type="text" id="FirstName" className="form-auth__input" {...register("firstName", {
+                    <input type="text" id="FirstName" className="main-form__input" {...register("firstName", {
                         required: "Укажите имя"
                     })}/>
-                    <label className="form-auth__label" htmlFor="MiddleName">Отчество</label>
-                    <input type="text" id="MiddleName" className="form-auth__input" {...register("middleName")}/>
-                    <label className="form-auth__label" htmlFor="Specialization">Специализация</label>
+                    <label className="main-form__label" htmlFor="MiddleName">Отчество</label>
+                    <input type="text" id="MiddleName" className="main-form__input" {...register("middleName")}/>
+                    <label className="main-form__label" htmlFor="Specialization">Специализация</label>
                     {errors.specialization && <span className="form__auth-error-text">{errors.specialization.message as string }</span>}
-                    <input type="text" id="Specialization" className="form-auth__input" {...register("specialization", {
+                    <input type="text" id="Specialization" className="main-form__input" {...register("specialization", {
                         required: "Укажите специализацию"
                     })}/>
-                    <label className="form-auth__label" htmlFor="Email">Email</label>
+                    <label className="main-form__label" htmlFor="Email">Email</label>
                     {errors.email && <span className="form__auth-error-text">{errors.email.message as string }</span>}
-                    <input autoComplete="email"  type="email" id="Email" className="form-auth__input" {...register('email', {
+                    <input autoComplete="email"  type="email" id="Email" className="main-form__input" {...register('email', {
                         required: "Укажите email",
                         pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
                             message: "Неверный email",
                         }
                     })}/>
-                    <label className="form-auth__label" htmlFor="Password">Пароль</label>
+                    <label className="main-form__label" htmlFor="Password">Пароль</label>
                     {errors.password && <span className="form__auth-error-text">{errors.password.message as string }</span>}
-                    <input autoComplete="new-password" type="password" id="Password" className="form-auth__input" {...register("password", {
+                    <input autoComplete="new-password" type="password" id="Password" className="main-form__input" {...register("password", {
                         required: "Введите пароль"
                     })}/>
-                    <label className="form-auth__label" htmlFor="PasswordSecure">Подтверждение пароля</label>
+                    <label className="main-form__label" htmlFor="PasswordSecure">Подтверждение пароля</label>
                     {errors.confirmPassword && <span className="form__auth-error-text">{errors.confirmPassword.message as string }</span>}
-                    <input autoComplete="new-password" type="password" id="PasswordSecure" className="form-auth__input" {...register("confirmPassword", {
+                    <input autoComplete="new-password" type="password" id="PasswordSecure" className="main-form__input" {...register("confirmPassword", {
                         required: "Подвердите пароль",
                         validate: (val: string) => {
                             if (watch('password') !== val) {
@@ -107,7 +107,7 @@ function RegisterForm() {
                             }
                         },
                     })}/>
-                    <input type="submit" className="form-auth__submit" value="Создать аккаунт"/>
+                    <input type="submit" className="main-form__submit" value="Создать аккаунт"/>
                 </form>
             }
         </>

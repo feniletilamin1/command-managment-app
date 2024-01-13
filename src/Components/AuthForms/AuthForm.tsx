@@ -1,7 +1,7 @@
 import "./AuthForms.css"
 import axios, { AxiosError } from "axios";
 import {useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import Preloader from "../Preloader/Preloader";
 import { MessageResponseType, LoginProfileResponce, LogInTypeDto } from "../../Types/ResponseTypes";
@@ -57,23 +57,24 @@ export default function  AuthForm() {
         <>
             {loading && <Preloader fixed={false}/>}
             {!loading && 
-            <form onSubmit={handleSubmit(formSubmitHanlder)} className="form-auth">
+            <form onSubmit={handleSubmit(formSubmitHanlder)} className="main-form">
                 {errors.root && <span className="form__auth-error-text">{errors.root.serverError.message as string }</span>}
-                <label className="form-auth__label" htmlFor="Email">Email</label>
+                <label className="main-form__label" htmlFor="Email">Email</label>
                 {errors.email && <span className="form__auth-error-text">{errors.email.message as string}</span>}
-                <input autoComplete="email" type="email" id="Email" className="form-auth__input" {...register('email', {
+                <input autoComplete="email" type="email" id="Email" className="main-form__input" {...register('email', {
                     required: "Введите email",
                     pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i,
                         message: "Неверный email",
                     }
                 })}/>
-                <label className="form-auth__label" htmlFor="Password">Пароль</label>
+                <label className="main-form__label" htmlFor="Password">Пароль</label>
                 {errors.password && <span className="form__auth-error-text">{errors.password?.message as string }</span>}
-                <input autoComplete='current-password' type="password" id="Password" className="form-auth__input" {...register('password', {
+                <input autoComplete='current-password' type="password" id="Password" className="main-form__input" {...register('password', {
                     required: "Введите пароль",
                 })}/>
-                <input type="submit" className="form-auth__submit" value="Войти"/>
+                <input type="submit" className="main-form__submit" value="Войти"/>
+                <Link to="/password-reset" className="form__auth-link">Забыли пароль?</Link>
             </form>}
         </> 
     )

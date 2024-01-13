@@ -17,3 +17,5 @@ export type ChangePasswordDto = {
     newPasswordMath?: string
 }
 
+export type ResetPasswordDto = Pick<Partial <UserType>, "email">
+

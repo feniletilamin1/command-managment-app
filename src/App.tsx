@@ -20,6 +20,7 @@ import UpdateTeamPage from './Pages/UpdateTeamPage';
 import { getTeamsAsync } from './app/slices/teamSlice';
 import InviteTeamPage from './Pages/InviteTeamPage';
 import ScrumBoardPage from './Pages/ScrumBoardPage';
+import PasswordResetPage from './Pages/PasswordResetPage';
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -54,8 +55,9 @@ export default function App() {
                 <Route path="/teams/newTeam/" element={<AddTeamPage />}/>
                 <Route path="/teams/updateTeam/:teamId" element={<UpdateTeamPage />}/>
                 <Route path="/inviteToTeam/:token" element={<InviteTeamPage />} />
-                <Route path="*" element={<Page404 />}/>
                 <Route path="/board/:projectId" element={<ScrumBoardPage />}/>
+                <Route path="/password-reset" element={<PasswordResetPage />}/>
+                <Route path="*" element={<Page404 />}/>
             </Routes>
           </main>
           <Footer />

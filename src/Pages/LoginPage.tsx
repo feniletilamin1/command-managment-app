@@ -1,5 +1,5 @@
 import AuthForm from "../Components/AuthForms/AuthForm";
-import { useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Layout from "../Components/Layout/Layout";
 import { useTitle } from "../hooks/useTitle";
