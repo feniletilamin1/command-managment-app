@@ -1,15 +1,6 @@
-.projects-table {
-	width: 100%;
-	border: none;
-	margin-bottom: 20px;
-	border-collapse: separate;
-}
-.projects-table thead th {
-	font-weight: bold;
-	text-align: center;
-	border: none;
-	padding: 10px 15px;
-	background: #EDEDED;
-	font-size: 14px;
-	border-top: 1px solid #ddd;
+.projects-container {
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	overflow: hidden;
 }

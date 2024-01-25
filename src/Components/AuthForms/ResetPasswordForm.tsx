@@ -8,7 +8,6 @@ import { useState } from "react";
 import { ResetPasswordDto } from "../../Types/AuthenficationTypes";
 
 
-
 export default function ResetPasswordForm() {
 
     const { register, formState: { errors }, handleSubmit, setError} = useForm({

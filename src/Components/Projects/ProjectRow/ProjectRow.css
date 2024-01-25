@@ -1,39 +1,69 @@
-.projects-table tr th:first-child, .projects-table tr td:first-child {
-	border-left: 1px solid #ddd;
+.project-item {
+	border-bottom: 1px solid #e0e0e0;
+	padding: 20px;
+	display: flex;
+    font-weight: 400;
+    font-family: "Mulish";
+	display: flex;
+	justify-content:space-between;
 }
 
-.projects-table tr th:last-child, .projects-table tr td:last-child {
-	border-right: 1px solid #ddd;
+.project-item__details {
+	margin-bottom: 10px;
 }
 
-.projects-table thead tr th:first-child {
-	border-radius: 20px 0 0 0;
+.project-item__name {
+	margin-bottom: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 5px;
 }
 
-.projects-table thead tr th:last-child {
-	border-radius: 0 20px 0 0;
+.project-item__leader, .project-item__team {
+	margin-top: 10px;
+	font-size: 16px;
+	color: #666;
+	line-height: 25px;
 }
 
-.projects-table tbody td {
-	text-align: center;
+.scrum-button {
+	background-color: #1E152A;
+	color: #fff;
 	border: none;
 	padding: 10px 15px;
 	font-size: 14px;
-	vertical-align: top;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 30px;
+	display: inline-block;
+	text-align: center;
 }
 
-.projects-table tbody tr:nth-child(even) {
-	background: #F8F8F8;
+.scrum-button:hover {
+	background-color: #3d3c3f;
 }
 
-.projects-table tbody tr:last-child td{
-	border-bottom: 1px solid #ddd;
+.project-item__image {
+	width: auto;
+	height: 200px;
 }
 
-.projects-table tbody tr:last-child td:first-child {
-	border-radius: 0 0 0 20px;
-}
 
-.projects-table tbody tr:last-child td:last-child {
-	border-radius: 0 0 20px 0;
+@media screen and (max-width: 620px) {
+    .project-item__name {
+		font-size: 18px;
+	}
+	
+	.project-item__leader, .project-item__team {
+		font-size: 14px;
+	}
+
+	.scrum-button {
+		font-size: 12px;
+	}
+
+	.project-item__image {
+		height: 150px;
+	}
 }
