@@ -1,3 +1,5 @@
+import { UserType } from "./ModelsType";
+
 export type Id = string | number;
 
 export type ColumnType = {
@@ -12,10 +14,14 @@ export type TaskType = {
     content: string,
     scrumBoardId: number,
     order: number,
+    isDone: boolean,
+    responsibleUserId: number,
+    responsibleUser?: UserType,
 }
 
 export type ScrumBoardType = {
     id: number,
     scrumBoardColumns: ColumnType[],
     scrumBoardTasks: TaskType[],
+    teamUsers: UserType[]
 }

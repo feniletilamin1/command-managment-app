@@ -10,11 +10,10 @@ import { useForm } from 'react-hook-form';
 
 type ProfileEditFormProps = {
     user: UserType,
-    setLoading: Function,
 }
 
 export default function ProfileEditForm (props: ProfileEditFormProps) {
-    const { user, setLoading } = props;
+    const { user } = props;
     const dispatch = useAppDispatch();
 
     const cookies = new Cookies();
@@ -51,9 +50,6 @@ export default function ProfileEditForm (props: ProfileEditFormProps) {
                     message: error.message,
                 })
         })
-        .finally(function () {
-            setLoading(false);
-        }) 
     }
 
     const profileInfoUpdateHandler = (data: UpdateDto) => {
@@ -61,7 +57,6 @@ export default function ProfileEditForm (props: ProfileEditFormProps) {
         data.id = user.id;
         data.photo = data.fileList![0];
 
-        setLoading(true);
 
         axios.put<UpdateProfileResponce>(process.env.REACT_APP_SERVER_HOST + '/api/Authenfication/ProfileUpdate', data, {
                 headers: {
@@ -84,9 +79,6 @@ export default function ProfileEditForm (props: ProfileEditFormProps) {
                         message: error.message,
                     })
             })
-            .finally(function () {
-                setLoading(false);
-            }) 
     }
 
     return (
@@ -123,7 +115,7 @@ export default function ProfileEditForm (props: ProfileEditFormProps) {
                         <label className="edit-form__label" htmlFor="avatar">Фото:</label>
                         <input accept="image/png, image/jpeg, image/bmp, image/webp" className="edit-form__input" type="file" id="avatar" {...updateProfileForm.register("fileList")}/>
                     </div>
-                    <button className="edit-form__submit" type="submit">Сохранить</button>
+                    <button disabled={updateProfileForm.formState.isSubmitting} className="edit-form__submit" type="submit">Сохранить</button>
                 </form>
                 <form onSubmit={updatePasswordForm.handleSubmit(changePassWordHandler)} className="edit-form">
                     <div className="edit-form__form-group">
@@ -153,7 +145,7 @@ export default function ProfileEditForm (props: ProfileEditFormProps) {
                             },
                         })}/>
                     </div>
-                    <button className="edit-form__submit" type="submit">Изменить пароль</button>
+                    <button disabled={updatePasswordForm.formState.isSubmitting} className="edit-form__submit" type="submit">Изменить пароль</button>
                 </form>
             </div>
         </>

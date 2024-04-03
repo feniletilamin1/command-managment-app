@@ -3,8 +3,17 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    position: relative;
     margin-right: 10px;
-    float: left;
+    overflow: hidden;
+}
+
+.team__member-avatar-image {
+    position: absolute;
+    width: 80px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .team__member-text {
@@ -13,7 +22,6 @@
     color: black;
 }
 
-/* Clearfix для правильного отображения аватаров и имён */
 .team__member-info {
     display: flex;
     align-items: center;

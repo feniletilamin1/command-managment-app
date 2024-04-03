@@ -11,9 +11,12 @@ import axios, { AxiosError } from 'axios';
 import { useUserCookies } from '../../hooks/useUserCokies';
 import { MessageResponseType } from '../../Types/ResponseTypes';
 import uuid from 'react-uuid';
+import { IconTypeOption } from '../../Types/SelectTypes';
+import IconSelect from '../IconSelect/IconSelect';
 
 
 export default function ScrumBoard (props: ScrumBoardType) {
+    const { teamUsers } = props;
     const token = useUserCookies();
     const [columns, setColumns] = useState<ColumnType[]>(props.scrumBoardColumns);
     const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
@@ -23,7 +26,17 @@ export default function ScrumBoard (props: ScrumBoardType) {
     const [disableColumnUpdate, setDisableColumnUpdate] = useState<boolean>(true);
     const [disableTaskUpdate, setDisableTaskUpdate] = useState<boolean>(true);
 
-    
+    const options: IconTypeOption[] = [];
+    let selectedUserId: number | null = null;
+
+    teamUsers.map(item =>
+        options.push({
+            label: `${item.lastName} ${item.firstName} ${item.middleName}`,
+            value: item.id,
+            image: process.env.REACT_APP_SERVER_HOST + "/" + item.photo,
+        })
+    );
+
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -72,15 +85,19 @@ export default function ScrumBoard (props: ScrumBoardType) {
     // eslint-disable-next-line react-hooks/exhaustive-deps       
     }, [tasks]);
 
-
     return (
-        <div className="scrum-board">
+        <>
+            <p className="select-title">Ответственный за задачи</p>
+            <IconSelect options={options} placeholder={"Выберите отвественного задачи"} handleChange={(selectedItem) => {
+                selectedUserId = selectedItem!.value;
+            }}/>
+            <div className="scrum-board">  
             <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
                 <div className="scrum-board__wrapper">
                     <div className="scrum-board__container">
                        <SortableContext items={columnsId}>
                         {columns.map(col => 
-                                <ColumnContainer tasks={tasks.filter(task => task.scrumBoardColumnId === col.id)} key={col.id} column={col} 
+                                <ColumnContainer changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === col.id)} key={col.id} column={col} 
                                 deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} deleteTask={deleteTask} 
                                 updateTask={updateTask}/>
                             )}
@@ -91,15 +108,16 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 {
                     createPortal(
                         <DragOverlay>
-                            {activeColumn && <ColumnContainer tasks={tasks.filter(task => task.scrumBoardColumnId === activeColumn.id)} 
+                            {activeColumn && <ColumnContainer changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === activeColumn.id)} 
                             column={activeColumn} deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} 
                             deleteTask={deleteTask} updateTask={updateTask}/> }
-                            {activeTask && <TaskCard task={activeTask} deleteTask={deleteTask} updateTask={updateTask}/>}
+                            {activeTask && <TaskCard changeTaskState={changeStateTask} task={activeTask} deleteTask={deleteTask} updateTask={updateTask}/>}
                         </DragOverlay>, document.body
                     )
                 }
             </DndContext>
-        </div>
+        </div>   
+        </>
     )
 
     function createNewColumn() {
@@ -206,12 +224,19 @@ export default function ScrumBoard (props: ScrumBoardType) {
     }
 
     function createTask(columnId: Id) {
+        if(selectedUserId === null){
+            alert("Выберите отвественного за задачу");
+            return;
+        }
+
         const scrumBoardTask: TaskType = {
             id: uuid(),
             scrumBoardColumnId: columnId,
             content: `Задача ${tasks.length}`,
             scrumBoardId: props.id,
             order: tasks.length,
+            isDone: false,
+            responsibleUserId: selectedUserId,
         }
     
         axios.post<TaskType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
@@ -222,7 +247,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
         })
         .then(function (response) {
             scrumBoardTask.id = response.data.id;
-            setTasks([...tasks, scrumBoardTask]);
+            setTasks([...tasks, response.data]);
         })
         .catch(function (error:AxiosError<MessageResponseType>) {
             console.log(error);
@@ -256,6 +281,8 @@ export default function ScrumBoard (props: ScrumBoardType) {
         setDisableTaskUpdate(true);
 
         const updatedTask = tasks.find(col => col.id === taskId);
+
+        updatedTask!.responsibleUser = undefined;
 
         updatedTask!.content = content;
 
@@ -307,5 +334,37 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 return arrayMove(tasks, actvieIndex, overIndex);
             })
         }
+    }
+
+    function changeStateTask(taskId: Id) {
+        const currentTask = tasks.find(task => task.id === taskId);
+
+        if(currentTask) {
+            if(currentTask.isDone)
+                currentTask.isDone = false;
+            else
+                currentTask.isDone = true;
+
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', currentTask, 
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(function () {
+                const newTasks: TaskType[] = tasks.map((task) => {
+                    if(task.id === taskId){
+                        task = currentTask;
+                    }
+                    return task;
+                });
+    
+                setTasks(newTasks);
+            })
+            .catch(function (error:AxiosError<MessageResponseType>) {
+                console.log(error.response);
+            })
+        }
+        else return;
     }
 }

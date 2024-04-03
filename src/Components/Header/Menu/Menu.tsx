@@ -18,6 +18,9 @@ export default function Menu (props: MenuProps) {
                 <nav className="menu">
                     <ul className="menu__list">
                         <li className="menu__list-item">
+                            <NavLink onClick={() => menuCloser()} to ="/tasks" className={(navData) => navData.isActive ? "menu__link menu__link--active" : "menu__link"}>Мои задачи</NavLink>
+                        </li>
+                        <li className="menu__list-item">
                             <NavLink onClick={() => menuCloser()} to ="/teams" className={(navData) => navData.isActive ? "menu__link menu__link--active" : "menu__link"}>Мои команды</NavLink>
                         </li>
                         <li className="menu__list-item">

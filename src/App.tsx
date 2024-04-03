@@ -54,7 +54,7 @@ export default function App() {
                 <Route path="/teams/team/:teamId" element={<TeamPage />}/>
                 <Route path="/teams/newTeam/" element={<AddTeamPage />}/>
                 <Route path="/teams/updateTeam/:teamId" element={<UpdateTeamPage />}/>
-                <Route path="/inviteToTeam/:token" element={<InviteTeamPage />} />
+                <Route path="/inviteToTeam/:teamToken" element={<InviteTeamPage />} />
                 <Route path="/board/:projectId" element={<ScrumBoardPage />}/>
                 <Route path="/password-reset" element={<PasswordResetPage />}/>
                 <Route path="*" element={<Page404 />}/>

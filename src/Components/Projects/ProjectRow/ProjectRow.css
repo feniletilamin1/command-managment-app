@@ -1,11 +1,14 @@
 .project-item {
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
 	border-bottom: 1px solid #e0e0e0;
 	padding: 20px;
 	display: flex;
     font-weight: 400;
     font-family: "Mulish";
-	display: flex;
-	justify-content:space-between;
+	width: 570px;
+	justify-content: space-between;
 }
 
 .project-item__details {
@@ -50,20 +53,56 @@
 }
 
 
+@media screen and (max-width: 1270px) {
+    .project-item {
+		width: 460px;
+	}
+	
+	.project-item__image {
+		height: 180px;
+	}
+	
+}
+
+@media screen and (max-width: 1050px) {
+    .project-item {
+		width: 100%;
+	}
+}
+
 @media screen and (max-width: 620px) {
-    .project-item__name {
-		font-size: 18px;
+	.project-item__name {
+		margin-bottom: 10px;
+		font-size: 16px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 5px;
 	}
 	
 	.project-item__leader, .project-item__team {
-		font-size: 14px;
+		margin-top: 10px;
+		font-size: 12px;
+		color: #666;
+		line-height: 25px;
+	}
+	
+	.scrum-button {
+		font-size: 10px;
+		margin-top: 10px;
+	}
+
+	
+	.project-item__image {
+		height: 150px;
+	}
+}
+
+@media screen and (max-width: 440px) {
+    .project-item__image {
+		display: none;
 	}
 
 	.scrum-button {
-		font-size: 12px;
-	}
-
-	.project-item__image {
-		height: 150px;
+		width: 100%;
 	}
 }

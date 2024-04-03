@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 80px;
+    height: 150px;
 }
 
 .scrum-board__task-card--isDragging {
@@ -16,7 +16,7 @@
     opacity: 0.5;
 }
 
-.scrum-board__task-card-content, .scrum-board__task-card-textarea {
+.scrum-board__task-card-textarea {
     font-family: 'Mulish';
     font-style: normal;
     font-weight: 400;
@@ -31,8 +31,8 @@
     border-color:#2c47f5;
 }
 
-.scrum-board__task-card .scrum-board__column-delete-btn {
-    top: 50%;
+.scrum-board__task-card .scrum-board__icon {
+    top: 30px;
     right: 20px;
     transform: translateY(-50%);
     position: absolute;
@@ -47,6 +47,7 @@
     padding: 0;
     max-width: 100%;
     padding-right: 5px;
+    padding-left: 30px;
 }
 
 .scrum-board__task-card-textarea::-webkit-scrollbar, .scrum-board__task-card-content::-webkit-scrollbar {
@@ -61,4 +62,58 @@
 .scrum-board__task-card-textarea::-webkit-scrollbar-thumb, .scrum-board__task-card-content::-webkit-scrollbar-thumb {
   background: #ffffff;
   border-radius: 25px;
+}
+
+.scrum-board__task-card-done-icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    cursor: pointer;
+}
+
+.scrum-board__task-user {
+    display: flex;
+    flex-direction: column;
+}
+
+.scrum-board__task-user-inner-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.scrum-board__task-user-avatar {
+    width: 35px;
+    height: 35px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.scrum-board__task-user-avatar-img {
+    width: 35px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.scrum-board__task-user-name {
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #FFFFFF;
+    line-height: 20px;
+    margin-left: 10px;
+}
+
+.scrum-board__task-user-title {
+    margin-bottom: 10px;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #FFFFFF;
 }

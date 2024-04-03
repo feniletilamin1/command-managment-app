@@ -2,31 +2,29 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {MessageResponseType } from "../Types/ResponseTypes";
-import Cookies from "universal-cookie";
 import { useAppDispatch } from "../app/hook";
 import { getTeamsAsync } from "../app/slices/teamSlice";
 import Preloader from "../Components/Preloader/Preloader";
 import Layout from "../Components/Layout/Layout";
+import { useUserCookies } from "../hooks/useUserCokies";
 
 export default function InviteTeamPage() {
     const dispatch = useAppDispatch();
-    const {token } = useParams();
+    const { teamToken } = useParams();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string| null>(null);
-    
-    const cookies = new Cookies();
-    const email: string = cookies.get("email");
+    const [loading, setLoading] = useState<boolean>(true);
+    // const [error, setError] = useState<string| null>(null);
+    const token = useUserCookies();
 
-    useEffect( () => {
-        if(!token || !email) {
-            navigate("404");
-            return;
+    useEffect(() => {
+        if(!token) {
+            navigate("/login");
         }
-    
-
-        setLoading(true);
-        axios.post(process.env.REACT_APP_SERVER_HOST + '/api/Teams/InviteUserToTeam/', token, 
+        else if(!teamToken) {
+            navigate("/404");
+        }
+        
+        axios.get(process.env.REACT_APP_SERVER_HOST + '/api/Teams/InviteUserToTeam/' + teamToken, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -34,24 +32,22 @@ export default function InviteTeamPage() {
         })
         .then(function () {
             dispatch(getTeamsAsync());
-            navigate("/teams");
         })
         .catch(function (error: AxiosError<MessageResponseType>) {
-            if(error.response)
-                setError(error.response.data.message)
-            else
-                setError(error.message);
+            console.log(error);
         })
         .finally(function () {
             setLoading(false);
+            navigate("/teams");
+            
         })
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+                
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <Layout>
             {loading && <Preloader fixed={false} />}
-            {error && <p>Ошибка: {error}</p>}
         </Layout>
             
     )

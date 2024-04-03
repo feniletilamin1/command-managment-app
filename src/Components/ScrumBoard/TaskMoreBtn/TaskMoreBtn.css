@@ -1,0 +1,33 @@
+.scrum-board__icon:hover + .scrum-board__task-events-list {
+    display: flex;
+}
+
+.scrum-board__task-events-list {
+    z-index: 1;
+    cursor: default;
+    display: none;
+    position: absolute; 
+    background-color: white;
+    top: 32px;
+    right: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.scrum-board__task-events-list:hover {
+    display: flex;
+}
+
+.scrum-board__task-events-list-item {
+    cursor: pointer;
+    position: relative;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.2px;
+    color: #000000;
+}

@@ -43,11 +43,12 @@ export default function ScrumBoardPage() {
         .finally (function () {
             setLoading(false);
         })
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
-        <Layout title="Scrum Board">
+        <Layout title="Доска планирования проекта">
             {token && loading && !error && <Preloader fixed={false}/>}
             {token && !loading && !error && scrumBoard && <ScrumBoard {...scrumBoard} /> }
         </Layout>   

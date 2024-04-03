@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Profile from "../Components/Profile/Profile";
 import ProfileEditForm from "../Components/ProfileEditForm/ProfileEditForm";
-import { useEffect, useState } from "react";
-import Preloader from "../Components/Preloader/Preloader";
+import { useEffect } from "react";
 import Layout from "../Components/Layout/Layout";
 import {useAppSelector } from "../app/hook";
 import { useTitle } from "../hooks/useTitle";
@@ -13,8 +12,6 @@ export default function ProfilePage() {
     const { user } = useAppSelector((state) => state.user);
 
     useTitle("WorkFlow - Профиль");
-
-    const [loading, setLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -30,10 +27,9 @@ export default function ProfilePage() {
 
     return (
         <Layout title="Профиль">
-            {loading && <Preloader fixed={false}/>}
-            {!loading && user && <>
+            {user && <>
                 <Profile user={user} />
-                <ProfileEditForm user={user} setLoading={setLoading}/>
+                <ProfileEditForm user={user}/>
             </>}
         </Layout>
     )

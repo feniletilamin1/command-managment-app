@@ -1,20 +1,22 @@
 import { useRef, useState } from 'react';
 import { Id, TaskType } from '../../../Types/ScrumBoardTypes';
-import ScrumBoardDeleteBtn from '../ScrumBoardDeleteBtn/ScrumBoardDeleteBtn';
 import './TaskCard.css';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import NotDoneIcon from '../../../icons/not-done-icon.svg';
+import DoneIcon from '../../../icons/done-icon.svg';
+import TaskMoreBtn from '../TaskMoreBtn/TaskMoreBtn';
 
 
 type TaskCardProps = {
     task: TaskType,
     deleteTask: (taskId: Id) => void,
     updateTask: (taskId: Id, content: string) => void,
+    changeTaskState: (taskId: Id) => void,
 }
 
 export default function TaskCard(props: TaskCardProps) {
-    const { task, deleteTask, updateTask } = props;
-    const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
+    const { task, deleteTask, updateTask, changeTaskState } = props;
     const [editMode, setEditMode] = useState<boolean>(false);
     const taskContentTArea = useRef<HTMLTextAreaElement | null>(null);
 
@@ -35,7 +37,6 @@ export default function TaskCard(props: TaskCardProps) {
 
     const toggleEditMode = () => {
         setEditMode((prev) => !prev);
-        setMouseIsOver(false);
     };
 
     if(isDragging) {
@@ -51,17 +52,46 @@ export default function TaskCard(props: TaskCardProps) {
                     if(e.key === "Enter" && e.shiftKey) return;
                     else if(e.key === "Enter" && taskContentTArea.current!.value !== "") {
                         toggleEditMode();
-                        updateTask(task.id, taskContentTArea.current!.value)
+                        updateTask(task.id, taskContentTArea.current!.value);
                     }
+                    else if(e.key === "Escape")
+                        toggleEditMode();
                 }} defaultValue={task.content} autoFocus onBlur={toggleEditMode} className="scrum-board__task-card-textarea"></textarea>
+                <div className="scrum-board__task-user">
+                <p className="scrum-board__task-user-title">Ответственный:</p>
+                <div className="scrum-board__task-user-inner-wrapper">
+                    <div className="scrum-board__task-user-avatar">
+                        <img src={process.env.REACT_APP_SERVER_HOST + "/" + task.responsibleUser!.photo} alt="user-avatar" className="scrum-board__task-user-avatar-img" />
+                    </div>
+                    <p className="scrum-board__task-user-name">{task.responsibleUser!.lastName + " " + task.responsibleUser!.firstName}</p>
+                </div>
+            </div>
             </div>
         )
     }
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} onClick={toggleEditMode} onMouseEnter={() => setMouseIsOver(true)} onMouseLeave={() => setMouseIsOver(false)} className="scrum-board__task-card">
-            <p className="scrum-board__task-card-content">{task.content}</p>
-            {mouseIsOver && <ScrumBoardDeleteBtn deleteFunction={() => deleteTask(task.id)} />}
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="scrum-board__task-card">
+            <img onClick={() => changeTaskState(task.id)} src={task.isDone ? DoneIcon : NotDoneIcon} alt="done-icon" className="scrum-board__task-card-done-icon" onMouseOver={
+                (e) => {
+                    e.currentTarget.setAttribute("src", DoneIcon)
+                }
+            } onMouseOut={(e) => {
+                if(!task.isDone) {
+                    e.currentTarget.setAttribute("src", NotDoneIcon);
+                }
+            }}/>
+            <textarea onClick={toggleEditMode} readOnly defaultValue={task.content} className="scrum-board__task-card-textarea"></textarea>
+            <TaskMoreBtn deleteTaskFunction={() => deleteTask(task.id)} showModalFunction={() => {}} />
+            <div className="scrum-board__task-user">
+                <p className="scrum-board__task-user-title">Ответственный:</p>
+                <div className="scrum-board__task-user-inner-wrapper">
+                    <div className="scrum-board__task-user-avatar">
+                        <img src={process.env.REACT_APP_SERVER_HOST + "/" + task.responsibleUser!.photo} alt="user-avatar" className="scrum-board__task-user-avatar-img" />
+                    </div>
+                    <p className="scrum-board__task-user-name">{task.responsibleUser!.lastName + " " + task.responsibleUser!.firstName}</p>
+                </div>
+            </div>
         </div>
     )
 }

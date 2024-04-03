@@ -11,7 +11,9 @@ export default function Profile(props: ProfileProps) {
 
     return (
     <div className="profile">
-        <img src={user.photo} alt="Фото пользователя" className="profile__avatar"/>
+        <div className="profile__avatar">
+            <img src={user.photo} alt="Фото пользователя" className="profile__avatar-image"/>
+        </div>
         <div className="profile__details">
             <h2 className="profile__name">{`${user.lastName} ${user.firstName} ${user.middleName ? user.middleName : ""}`}</h2>
             <p className="profile__specialization">Специализация: {user.specialization}</p>
