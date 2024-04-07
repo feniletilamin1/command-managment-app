@@ -282,8 +282,6 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         const updatedTask = tasks.find(col => col.id === taskId);
 
-        updatedTask!.responsibleUser = undefined;
-
         updatedTask!.content = content;
 
         axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', updatedTask, 

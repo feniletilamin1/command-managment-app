@@ -58,6 +58,7 @@ export default function ColumnContainer (props: ColumnContainerProps) {
                         {editMode && <input ref={columnInputName} className="scrum-board__update-title-input" 
                             defaultValue={column.name} autoFocus onBlur={() => setEditMode(false)} onKeyDown={(e) => {
                             if(e.key === "Enter" &&  column.name !== "") {
+                                setEditMode(false);
                                 updateColumn(column.id, columnInputName.current!.value);
                             }
                             else if(e.key === "Escape") {
