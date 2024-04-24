@@ -27,7 +27,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
     const [disableTaskUpdate, setDisableTaskUpdate] = useState<boolean>(true);
 
     const options: IconTypeOption[] = [];
-    let selectedUserId: number | null = null;
+    const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
     teamUsers.map(item =>
         options.push({
@@ -89,7 +89,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
         <>
             <p className="select-title">Ответственный за задачи</p>
             <IconSelect options={options} placeholder={"Выберите отвественного задачи"} handleChange={(selectedItem) => {
-                selectedUserId = selectedItem!.value;
+                setCurrentUserId(selectedItem!.value);
             }}/>
             <div className="scrum-board">  
             <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
@@ -224,7 +224,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
     }
 
     function createTask(columnId: Id) {
-        if(selectedUserId === null){
+        if(currentUserId === null){
             alert("Выберите отвественного за задачу");
             return;
         }
@@ -236,7 +236,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
             scrumBoardId: props.id,
             order: tasks.length,
             isDone: false,
-            responsibleUserId: selectedUserId,
+            responsibleUserId: currentUserId,
         }
     
         axios.post<TaskType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
@@ -252,7 +252,6 @@ export default function ScrumBoard (props: ScrumBoardType) {
         .catch(function (error:AxiosError<MessageResponseType>) {
             console.log(error);
         })
-
     }
 
     function deleteTask(taskId: Id) {
