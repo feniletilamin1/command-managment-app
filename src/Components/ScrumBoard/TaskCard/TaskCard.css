@@ -3,17 +3,21 @@
     padding: 20px;
     border-radius: 10px;
     border: 2px solid transparent;
-    transition: border-color .2s ease;
     cursor: grab;
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 150px;
+    min-height: 260px;
+    max-height: 260px;
+    height: 260px;
 }
 
 .scrum-board__task-card--isDragging {
     border-color:#2c47f5;
     opacity: 0.5;
+    min-height: 260px;
+    max-height: 260px;
+    height: 260px;
 }
 
 .scrum-board__task-card-textarea {
@@ -76,6 +80,7 @@
 .scrum-board__task-user {
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
 }
 
 .scrum-board__task-user-inner-wrapper {
@@ -109,7 +114,7 @@
     margin-left: 10px;
 }
 
-.scrum-board__task-user-title {
+.scrum-board__task-user-title, .scrum-board__date-time-created, .scrum-board__date-time-end, .scrum-board__priority-round {
     margin-bottom: 10px;
     font-family: 'Mulish';
     font-style: normal;
@@ -117,3 +122,67 @@
     font-size: 14px;
     color: #FFFFFF;
 }
+
+
+.scrum-board__date-time-created {
+    margin-top: 20px;
+}
+
+.scrum-board__date-time-end {
+    margin-top: 10px;
+}
+
+.scrum-board__task-card--priority1  {
+    border-color: rgb(204, 182, 152);
+}
+
+.scrum-board__task-card--priority1 .scrum-board__priority-round  {
+    background-color: rgb(204, 182, 152);
+}
+
+.scrum-board__task-card--priority2  {
+    border-color: green;
+}
+
+.scrum-board__task-card--priority2 .scrum-board__priority-round  {
+    background-color: green;
+}
+
+.scrum-board__task-card--priority3  {
+    border-color: yellow;
+}
+
+.scrum-board__task-card--priority3 .scrum-board__priority-round  {
+    background-color: yellow;
+}
+
+.scrum-board__task-card--priority4  {
+    border-color: orange;
+}
+
+.scrum-board__task-card--priority4 .scrum-board__priority-round  {
+    background-color: orange;
+}
+
+
+.scrum-board__task-card--priority5 {
+    border-color: red;
+}
+
+.scrum-board__task-card--priority5 .scrum-board__priority-round  {
+    background-color: red;
+}
+
+.scrum-board__priority-round {
+    width:20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #2c47f5;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+

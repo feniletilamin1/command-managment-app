@@ -30,6 +30,25 @@ export default function ProjectsPage() {
         projectForm.current?.classList.remove("project-form-container--active");
     }
 
+    const deleteProject = (projectId: number) => {
+        setLoading(true);
+        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/Projects/DeleteProject/' + projectId, 
+        {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(function ()  {
+            setProjects(projects.filter(project => project.id !== projectId));
+        })
+        .catch(function (error: AxiosError) {
+            setError(error.message);
+        })
+        .finally (function () {
+            setLoading(false);
+        })
+    }
+
     useEffect(() => {
         if(!token) {
             navigate("/login");
@@ -66,7 +85,7 @@ export default function ProjectsPage() {
                 <Search items={projects} setItems={setFilteredProjects}/>
                 <button className="section__button button" onClick={showProjectForm}>Добавить проект</button>
                 <ProjectAddForm closeForm={closeForm} formRef={projectForm} setProjects={setProjects} />
-                <ProjectList projects={filteredProjects ? filteredProjects : projects} /> 
+                <ProjectList projects={filteredProjects ? filteredProjects : projects} deleteProject={deleteProject}/> 
             </>}
         </Layout>
     )

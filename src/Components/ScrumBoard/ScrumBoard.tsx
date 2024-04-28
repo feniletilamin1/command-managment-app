@@ -14,7 +14,6 @@ import uuid from 'react-uuid';
 import { IconTypeOption } from '../../Types/SelectTypes';
 import IconSelect from '../IconSelect/IconSelect';
 
-
 export default function ScrumBoard (props: ScrumBoardType) {
     const { teamUsers } = props;
     const token = useUserCookies();
@@ -28,6 +27,8 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
     const options: IconTypeOption[] = [];
     const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+    const [currentPriority, setCurrentPriority] = useState<number | null>(null);
+    const [currentDateEnd, setCurrentDateEnd] = useState<Date | null>(null);
 
     teamUsers.map(item =>
         options.push({
@@ -91,6 +92,29 @@ export default function ScrumBoard (props: ScrumBoardType) {
             <IconSelect options={options} placeholder={"Выберите отвественного задачи"} handleChange={(selectedItem) => {
                 setCurrentUserId(selectedItem!.value);
             }}/>
+            <div className="select-wrapper">
+                <label placeholder="Укажите приоритет" className="select-wrapper__label">Приоритет:</label>
+                <input onInput={(e) => {
+                    let inputValue: number = parseInt(e.currentTarget.value);
+                    e.currentTarget.value = inputValue.toString();
+                    
+                    if(inputValue > 5) {
+                        e.currentTarget.value = "5";
+                        inputValue = 5;
+                    }
+                    else if(inputValue < 1) {
+                        e.currentTarget.value = "1";
+                        inputValue = 1;
+                    }
+                    setCurrentPriority(inputValue);
+                }}type="number" min="1" max="5" step="1" className="select-wrapper__input"/>
+            </div>
+            <div className="select-wrapper">
+                <label className="select-wrapper__label">Срок:</label>
+                <input onInput={(e) => {
+                    setCurrentDateEnd(new Date(e.currentTarget.value));
+                }} type="datetime-local" className="select-wrapper__input" />
+            </div>
             <div className="scrum-board">  
             <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
                 <div className="scrum-board__wrapper">
@@ -228,7 +252,15 @@ export default function ScrumBoard (props: ScrumBoardType) {
             alert("Выберите отвественного за задачу");
             return;
         }
-
+        else if(currentPriority === null) {
+            alert("Введите приоритет задачи");
+            return;
+        }
+        else if(currentDateEnd === null) {
+            alert("Введите дату срока задачи");
+            return;
+        }
+    
         const scrumBoardTask: TaskType = {
             id: uuid(),
             scrumBoardColumnId: columnId,
@@ -237,6 +269,9 @@ export default function ScrumBoard (props: ScrumBoardType) {
             order: tasks.length,
             isDone: false,
             responsibleUserId: currentUserId,
+            dateTimeCreated: new Date().toJSON(),
+            priorityIndex: currentPriority,
+            dateTimeEnd: currentDateEnd.toJSON()
         }
     
         axios.post<TaskType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
@@ -246,7 +281,6 @@ export default function ScrumBoard (props: ScrumBoardType) {
             }
         })
         .then(function (response) {
-            scrumBoardTask.id = response.data.id;
             setTasks([...tasks, response.data]);
         })
         .catch(function (error:AxiosError<MessageResponseType>) {

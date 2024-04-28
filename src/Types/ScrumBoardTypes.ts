@@ -17,6 +17,9 @@ export type TaskType = {
     isDone: boolean,
     responsibleUserId: number,
     responsibleUser?: UserType,
+    dateTimeCreated: string,
+    priorityIndex: number,
+    dateTimeEnd: string,
 }
 
 export type ScrumBoardType = {

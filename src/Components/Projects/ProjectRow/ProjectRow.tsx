@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 
 type ProjectCardProps = {
     project: ProjectType,
+    deleteProject: (projectId: number) => void
 }
 
 export default function ProjectRow(props: ProjectCardProps) {
-
-    const { project } = props
+    const { project, deleteProject} = props
 
     return (
 
@@ -23,6 +23,9 @@ export default function ProjectRow(props: ProjectCardProps) {
                 <Link to={"/board/" + project.id} className="scrum-button">Открыть доску задач</Link>
             </div>
             <img src={projectImage} alt="" className="project-item__image" />
+            <div className="project-item__delete" onClick={() => deleteProject(project.id)}>
+                <div className="project-item__delete-cross"></div>
+            </div>
         </div>
     )
 }

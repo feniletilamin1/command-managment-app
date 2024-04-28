@@ -42,12 +42,43 @@
     fill: white;
 }
 
-.select-title{
+.select-title, .select-wrapper {
     font-family: 'Mulish';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     color: #000000;
     line-height: 20px;
+}
+
+.select-title {
     margin-bottom: 10px;
+}
+
+.select-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.select-wrapper__label {
+    margin-bottom: 10px;
+}
+
+.select-wrapper__input {
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #000000;
+    line-height: 20px;
+    outline: 0 !important;
+    position: relative;
+    background-color: hsl(0, 0%, 100%);
+    border-color: hsl(0, 0%, 80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    padding: 8px 10px;
 }

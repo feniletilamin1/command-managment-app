@@ -5,16 +5,16 @@ import ProjectRow from "../ProjectRow/ProjectRow";
 
 type ProjectListProps = {
     projects: ProjectType[]
+    deleteProject: (projectId: number) => void
 }
 
 export default function ProjectList(props: ProjectListProps) {
-    
-    const { projects } = props;
+    const { projects, deleteProject } = props;
 
     return(
         <div className="projects-container">
             {projects.map(item =>
-                    <ProjectRow key={item.id} project={item}/>    
+                    <ProjectRow key={item.id} project={item} deleteProject={deleteProject}/>    
                 )}
         </div>
     
