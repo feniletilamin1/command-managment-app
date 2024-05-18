@@ -15,11 +15,12 @@ type ColumnContainerProps = {
     deleteTask: (taskId: Id) => void,
     updateTask: (taskId: Id, content: string) => void,
     changeStateTask: (taskId: Id) => void,
+    changeArchivedTask: (taskId: Id) => void,
     tasks: TaskType[],
 }
 
 export default function ColumnContainer (props: ColumnContainerProps) {
-    const { column, deleteColumn, updateColumn, createTask, tasks, deleteTask, updateTask, changeStateTask } = props;
+    const { column, deleteColumn, updateColumn, createTask, tasks, deleteTask, updateTask, changeStateTask, changeArchivedTask} = props;
     const [editMode, setEditMode] = useState<boolean>(false);
     const columnInputName = useRef<HTMLInputElement | null>(null);
     
@@ -75,7 +76,7 @@ export default function ColumnContainer (props: ColumnContainerProps) {
             <div className="scrum-board__column-content">
                 <SortableContext items={tasksIds}>
                     {tasks.map(task => 
-                        <TaskCard changeTaskState={changeStateTask} key={task.id} deleteTask={deleteTask} task={task} updateTask={updateTask}/>
+                        <TaskCard changeArchivedTask={changeArchivedTask} changeTaskState={changeStateTask} key={task.id} deleteTask={deleteTask} task={task} updateTask={updateTask}/>
                     )}
                 </SortableContext>
             </div>

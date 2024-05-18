@@ -60,9 +60,7 @@ export default function UpdateTeamForm(props: TeamTypeProps) {
             })}/>
             <label className="add-team-form__label" htmlFor="teamDescription">Описание:</label>
             {errors.teamDescription && <span className="add-team-form-error">{errors.teamDescription.message as string }</span>}
-            <textarea defaultValue={team.teamDescription} className="add-team-form__input add-team-form__input--textarea" id="teamDescription" {...register("teamDescription", {
-                required: "Введите описание команды"
-            })}></textarea>
+            <textarea defaultValue={team.teamDescription} className="add-team-form__input add-team-form__input--textarea" id="teamDescription" {...register("teamDescription")}></textarea>
             <button className="add-team-form__button">Изменить данные</button>
         </form>
     )

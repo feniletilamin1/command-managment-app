@@ -1,8 +1,11 @@
+import { ScrumBoardType } from "./ScrumBoardTypes"
+
 export type ProjectType = {
     id: number,
     name: string,
     createUser: UserType,
     team: TeamType,
+    board: ScrumBoardType,
 }
 
 export type UserType = {
@@ -28,4 +31,3 @@ export type TeamType = {
     users: UserType[],
     createUserId: number
 }
-

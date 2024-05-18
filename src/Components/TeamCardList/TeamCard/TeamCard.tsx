@@ -17,8 +17,8 @@ export default function TeamCard(props: TeamCardProps) {
                     <h2 className="team-card__name">{card.teamName}</h2>
                     <div className="avatar-list">
                         {card.users.map(user =>
-                            <div className="avatar-list__item">
-                                <img key={user.id} src={user.photo} alt="teamUser" className="avatar-list__image"/>
+                            <div key={user.id} className="avatar-list__item">
+                                <img  src={user.photo} alt="teamUser" className="avatar-list__image"/>
                             </div>
                         )}
                     </div>

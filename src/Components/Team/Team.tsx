@@ -84,7 +84,7 @@ export default function Team (props: TeamProps) {
                             </form>
                         </div>
                     }
-                    <p className="team__description">Описание: {team.teamDescription}</p>
+                    <p className="team__description">Описание: {team.teamDescription ? team.teamDescription : "Отсутствует" }</p>
                     {user && user.id === team.createUserId && <button onClick={getInviteLinkHandler} className="team__button team__button--blue">Получить пригласительную ссылку</button>}
                     {inviteLink && <p className="team__invite-link">Пригласительная ссылка: </p> }
                     {inviteLink && <p className="team__invite-link">{inviteLink}</p> }

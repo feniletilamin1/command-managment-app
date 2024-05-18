@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ProjectList from "../Components/Projects/ProjectList/ProjectList";
-import {useEffect, useRef, useState } from "react";
+import {FormEvent, useEffect, useRef, useState } from "react";
 import { ProjectType } from "../Types/ModelsType";
 import axios, { AxiosError } from "axios";
 import ProjectAddForm from "../Components/ProjectAddForm/ProjectAddForm";
@@ -67,12 +67,32 @@ export default function ProjectsPage() {
             })
             .catch(function (error: AxiosError) {
                 setError(error.message);
+                console.log(error)
             })
             .finally (function () {
                 setLoading(false);
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    
+    const searchInput = useRef<HTMLInputElement | null>(null);
+
+    const searchFormHandler = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const searchText: string = searchInput.current?.value!;
+
+        if(searchText !== "") {
+            let newItems: ProjectType[] = structuredClone(projects);
+            newItems = newItems.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()));
+            setFilteredProjects(newItems);
+        }
+        else {
+            setFilteredProjects(null);
+        }
+    }
+
 
     return (
         <Layout title="Проекты">
@@ -82,7 +102,7 @@ export default function ProjectsPage() {
             {token && loading && !error && <Preloader fixed={false}/>}
             {token && !loading && !error && 
             <>
-                <Search items={projects} setItems={setFilteredProjects}/>
+                <Search searchFormHandler={searchFormHandler} searchInput={searchInput}/>
                 <button className="section__button button" onClick={showProjectForm}>Добавить проект</button>
                 <ProjectAddForm closeForm={closeForm} formRef={projectForm} setProjects={setProjects} />
                 <ProjectList projects={filteredProjects ? filteredProjects : projects} deleteProject={deleteProject}/> 

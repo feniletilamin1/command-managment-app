@@ -18,7 +18,7 @@ export default function ScrumBoardPage() {
     const [error, setError] = useState<string | null>(null);
     const [scrumBoard, setScrumBoard] = useState<ScrumBoardType | null>(null);
 
-    const { projectId } = useParams();
+    const { scrumBoardId } = useParams();
 
     useEffect(() => {
         if(!token) {
@@ -26,7 +26,7 @@ export default function ScrumBoardPage() {
             return;
         }
         
-        axios.get<ScrumBoardType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/GetScrumBoard/'+ projectId, 
+        axios.get<ScrumBoardType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/GetScrumBoard/'+ scrumBoardId, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -48,7 +48,7 @@ export default function ScrumBoardPage() {
     }, [])
 
     return (
-        <Layout title="Доска планирования проекта">
+        <Layout title={`Доска планирования проекта`}>
             {token && loading && !error && <Preloader fixed={false}/>}
             {token && !loading && !error && scrumBoard && <ScrumBoard {...scrumBoard} /> }
         </Layout>   

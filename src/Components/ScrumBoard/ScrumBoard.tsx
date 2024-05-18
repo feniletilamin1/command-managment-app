@@ -121,7 +121,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
                     <div className="scrum-board__container">
                        <SortableContext items={columnsId}>
                         {columns.map(col => 
-                                <ColumnContainer changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === col.id)} key={col.id} column={col} 
+                                <ColumnContainer changeArchivedTask={changeArchivedTask} changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === col.id)} key={col.id} column={col} 
                                 deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} deleteTask={deleteTask} 
                                 updateTask={updateTask}/>
                             )}
@@ -132,10 +132,10 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 {
                     createPortal(
                         <DragOverlay>
-                            {activeColumn && <ColumnContainer changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === activeColumn.id)} 
+                            {activeColumn && <ColumnContainer changeArchivedTask={changeArchivedTask} changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === activeColumn.id)} 
                             column={activeColumn} deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} 
                             deleteTask={deleteTask} updateTask={updateTask}/> }
-                            {activeTask && <TaskCard changeTaskState={changeStateTask} task={activeTask} deleteTask={deleteTask} updateTask={updateTask}/>}
+                            {activeTask && <TaskCard changeArchivedTask={changeArchivedTask} changeTaskState={changeStateTask} task={activeTask} deleteTask={deleteTask} updateTask={updateTask}/>}
                         </DragOverlay>, document.body
                     )
                 }
@@ -269,9 +269,10 @@ export default function ScrumBoard (props: ScrumBoardType) {
             order: tasks.length,
             isDone: false,
             responsibleUserId: currentUserId,
-            dateTimeCreated: new Date().toJSON(),
+            dateTimeCreated: new Date(),
             priorityIndex: currentPriority,
-            dateTimeEnd: currentDateEnd.toJSON()
+            dateTimeEnd: currentDateEnd,
+            isArchived: false
         }
     
         axios.post<TaskType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
@@ -390,6 +391,29 @@ export default function ScrumBoard (props: ScrumBoardType) {
                     return task;
                 });
     
+                setTasks(newTasks);
+            })
+            .catch(function (error:AxiosError<MessageResponseType>) {
+                console.log(error.response);
+            })
+        }
+        else return;
+    }
+
+    function changeArchivedTask(taskId: Id) {
+        const currentTask = tasks.find(task => task.id === taskId);
+    
+        if(currentTask) {
+            currentTask.isArchived = true;
+
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', currentTask, 
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(function () {
+                const newTasks: TaskType[] = tasks.filter(task => task.id !== taskId);
                 setTasks(newTasks);
             })
             .catch(function (error:AxiosError<MessageResponseType>) {

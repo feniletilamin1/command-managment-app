@@ -17,14 +17,13 @@ export default function ResetPasswordForm() {
     const [loading, setLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();
-    
 
     const formSubmitHanlder = (data: ResetPasswordDto) => {        
         setLoading(true);
 
         axios.get(process.env.REACT_APP_SERVER_HOST + '/api/Authenfication/PasswordReset/' + data.email)
             .then (function () {
-                alert("Новый пароль отправлен на указанную почту.")
+                alert("Ссылка для сброса пароля отправлена на почту.")
                 navigate("/login");
             })
             .catch(function (error: AxiosError<MessageResponseType>) {

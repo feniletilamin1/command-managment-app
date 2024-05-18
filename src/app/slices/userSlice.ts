@@ -42,7 +42,7 @@ export const userSlice = createSlice({
     reducers: {
         logOutUser: (state) => {
             state.user = null;
-            cookies.remove("jwt");
+            cookies.remove('jwt', { path: '/' });
         },
         setUser: (state, action:PayloadAction<UserType>) => {
             state.user = action.payload;

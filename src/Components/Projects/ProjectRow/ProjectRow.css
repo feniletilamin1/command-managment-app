@@ -32,6 +32,7 @@
 }
 
 .scrum-button {
+	font-family: "Mulish";
 	background-color: #1E152A;
 	color: #fff;
 	border: none;
@@ -42,6 +43,7 @@
 	margin-top: 30px;
 	display: inline-block;
 	text-align: center;
+	transition: background-color .2s ease;
 }
 
 .scrum-button:hover {

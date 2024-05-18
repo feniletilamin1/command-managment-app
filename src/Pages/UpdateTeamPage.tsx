@@ -57,7 +57,7 @@ export default function AddTeamPage() {
             {loading && <Preloader fixed={false} />}
             {error && <p>Ошибка: {error}</p>}
             {token && team &&
-                <Layout title="Новая команда">
+                <Layout title="Изменение команды">
                     <UpdateTeamForm team={team}/>
                 </Layout>
             }

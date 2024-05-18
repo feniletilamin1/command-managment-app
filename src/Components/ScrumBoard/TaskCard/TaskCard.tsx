@@ -13,10 +13,11 @@ type TaskCardProps = {
     deleteTask: (taskId: Id) => void,
     updateTask: (taskId: Id, content: string) => void,
     changeTaskState: (taskId: Id) => void,
+    changeArchivedTask: (taskId: Id) => void,
 }
 
 export default function TaskCard(props: TaskCardProps) {
-    const { task, deleteTask, updateTask, changeTaskState } = props;
+    const { task, deleteTask, updateTask, changeTaskState, changeArchivedTask} = props;
     const [editMode, setEditMode] = useState<boolean>(false);
     const taskContentTArea = useRef<HTMLTextAreaElement | null>(null);
 
@@ -104,7 +105,7 @@ export default function TaskCard(props: TaskCardProps) {
                 }
             }}/>
             <textarea onClick={toggleEditMode} readOnly defaultValue={task.content} className="scrum-board__task-card-textarea"></textarea>
-            <TaskMoreBtn deleteTaskFunction={() => deleteTask(task.id)} showModalFunction={() => {}} />
+            <TaskMoreBtn deleteTaskFunction={() => deleteTask(task.id)} changeArchivedTask={() => changeArchivedTask(task.id)} />
             <div className="scrum-board__task-user">
                 <p className="scrum-board__task-user-title">Ответственный:</p>
                 <div className="scrum-board__task-user-inner-wrapper">

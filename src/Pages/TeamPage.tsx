@@ -23,6 +23,11 @@ export default function TeamPage() {
     const { teamId } = useParams();
     
     useEffect(() => {
+        if(!token) {
+            navigate("/login");
+            return;
+        }
+        
         axios.get<TeamType>(process.env.REACT_APP_SERVER_HOST + `/api/Teams/GetCurrentTeam/${teamId}`, 
         {
             headers: {

@@ -1,0 +1,44 @@
+/* Стили для каждой задачи */
+.task {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.task__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task__title {
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.task__status {
+    padding: 5px 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.task__status--completed {
+    background-color: #4CAF50; /* Зеленый цвет для выполненных задач */
+}
+
+.task__info {
+    margin-top: 15px;
+}
+
+.task__info-text {
+    line-height: 20px;
+    font-family: 'Mulish';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    color: rgb(105, 102, 102);
+    line-height: 25px;
+}
+

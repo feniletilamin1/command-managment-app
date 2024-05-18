@@ -20,7 +20,7 @@ export default function ProjectRow(props: ProjectCardProps) {
                     <div className="project-item__leader">Руководитель: {`${project.createUser.lastName} ${project.createUser.firstName} ${project.createUser.middleName ?? ""}`}</div>
                     <div className="project-item__team">Команда: {project.team.teamName}</div>
                 </div>
-                <Link to={"/board/" + project.id} className="scrum-button">Открыть доску задач</Link>
+                <Link to={"/board/" + project.board.id} className="scrum-button">Открыть доску задач</Link>
             </div>
             <img src={projectImage} alt="" className="project-item__image" />
             <div className="project-item__delete" onClick={() => deleteProject(project.id)}>
