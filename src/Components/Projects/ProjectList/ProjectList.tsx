@@ -11,6 +11,7 @@ type ProjectListProps = {
 export default function ProjectList(props: ProjectListProps) {
     const { projects, deleteProject } = props;
 
+
     return(
         <div className="projects-container">
             {projects.map(item =>

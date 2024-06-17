@@ -13,9 +13,10 @@ import { MessageResponseType } from '../../Types/ResponseTypes';
 import uuid from 'react-uuid';
 import { IconTypeOption } from '../../Types/SelectTypes';
 import IconSelect from '../IconSelect/IconSelect';
+import { useAppSelector } from '../../app/hook';
 
 export default function ScrumBoard (props: ScrumBoardType) {
-    const { teamUsers } = props;
+    const { teamUsers} = props;
     const token = useUserCookies();
     const [columns, setColumns] = useState<ColumnType[]>(props.scrumBoardColumns);
     const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
@@ -24,11 +25,61 @@ export default function ScrumBoard (props: ScrumBoardType) {
     const [activeTask, setActiveTask] = useState<TaskType | null>(null);
     const [disableColumnUpdate, setDisableColumnUpdate] = useState<boolean>(true);
     const [disableTaskUpdate, setDisableTaskUpdate] = useState<boolean>(true);
+    const { user } = useAppSelector((state) => state.user);
 
     const options: IconTypeOption[] = [];
     const [currentUserId, setCurrentUserId] = useState<number | null>(null);
     const [currentPriority, setCurrentPriority] = useState<number | null>(null);
     const [currentDateEnd, setCurrentDateEnd] = useState<Date | null>(null);
+
+    const [checkDoneTasks, setCheckDoneTasks] = useState<boolean>(false);
+    const [checkWorkTasks, setCheckWorkTasks] = useState<boolean>(false);
+    const [checkMyTask, setCheckMyTask] = useState<boolean>(false);
+    const [filteredTasks, setFilteredTasks] = useState<TaskType[] | null>(null);
+
+    const filterHandler = () => {
+        if(checkDoneTasks){
+            setCheckWorkTasks(false);
+            if(filteredTasks) {
+                setFilteredTasks(filteredTasks.filter(t => t.isDone === true));
+            }
+            else {
+                setFilteredTasks(tasks.filter(t => t.isDone === true));
+            }
+        }
+        if(checkWorkTasks) {
+            setCheckDoneTasks(false);
+            if(filteredTasks) {
+                setFilteredTasks(filteredTasks.filter(t => t.isDone === false));
+            }
+            else {
+                setFilteredTasks(tasks.filter(t => t.isDone === false));
+            }
+        }
+        if(checkMyTask) {
+            if(filteredTasks) {
+                setFilteredTasks(filteredTasks.filter(t => t.responsibleUserId === user?.id));
+            }
+            else {
+                setFilteredTasks(tasks.filter(t => t.responsibleUserId === user?.id));
+            }
+        }
+        else {
+            if(checkDoneTasks) {
+                setFilteredTasks(tasks.filter(t => t.isDone === true));
+            }
+            else if(checkWorkTasks) {
+                setFilteredTasks(tasks.filter(t => t.isDone === false));
+            }
+        }
+        if(!checkMyTask && !checkDoneTasks && !checkWorkTasks)
+            setFilteredTasks(null);
+    }
+
+    useEffect(() => {
+        filterHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
+    }, [checkDoneTasks, checkMyTask, checkWorkTasks])
 
     teamUsers.map(item =>
         options.push({
@@ -52,7 +103,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 obj.order = index;
             });
 
-            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnsMove/', columns, 
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Board/ColumnsMove/', columns, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -72,7 +123,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
                 obj.order = index;
             });
 
-            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TasksMove', tasks, 
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Board/TasksMove', tasks, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -88,6 +139,54 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
     return (
         <>
+            <div className="board-filters">
+                <div className="board-filters__group">
+                    <label className="board-filters__label" htmlFor="done-tasks">Завершенные</label>
+                    <input checked={checkDoneTasks} onChange={(e) => {
+                        setCheckDoneTasks(e.target.checked);
+                    }} id="done-tasks" type="checkbox" className="board-filters"/>
+                </div>
+                <div className="board-filters__group">
+                    <label className="board-filters__label" htmlFor="work-tasks">Незавершенные</label>
+                    <input checked={checkWorkTasks} onChange={(e) => {
+                        setCheckWorkTasks(e.target.checked);
+                    }} id="work-tasks" type="checkbox" className="board-filters"/>
+                </div>
+                <div className="board-filters__group">
+                    <label className="board-filters__label" htmlFor="my-tasks">Мои задачи</label>
+                    <input checked={checkMyTask} onChange={(e) => {
+                        setCheckMyTask(e.target.checked);
+                    }} id="my-tasks" type="checkbox" className="board-filters"/>
+                </div>
+            </div>
+            <div className="scrum-board">  
+            <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
+                <div className="scrum-board__wrapper">
+                    <div className="scrum-board__container">
+                       <SortableContext items={columnsId}>
+                        {columns.map(col => 
+                                <ColumnContainer createProjectUserId={props.project.createUser.id} changeArchivedTask={changeArchivedTask} changeStateTask={changeStateTask} tasks={filteredTasks ? filteredTasks.filter(task => task.scrumBoardColumnId === col.id) : tasks.filter(task => task.scrumBoardColumnId === col.id)} key={col.id} column={col} 
+                                deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} deleteTask={deleteTask} 
+                                updateTask={updateTask}/>
+                            )}
+                       </SortableContext>
+                    </div>
+                   <ScrumBoardAddBtn btnText="Добавить колонку" onClickFunction={createNewColumn}/>
+                </div>
+                {
+                    createPortal(
+                        <DragOverlay>
+                            {activeColumn && <ColumnContainer createProjectUserId={props.project.createUser.id} changeArchivedTask={changeArchivedTask} changeStateTask={changeStateTask} tasks={filteredTasks ? filteredTasks.filter(task => task.scrumBoardColumnId === activeColumn.id) : tasks.filter(task => task.scrumBoardColumnId === activeColumn.id)} 
+                            column={activeColumn} deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} 
+                            deleteTask={deleteTask} updateTask={updateTask}/> }
+                            {activeTask && <TaskCard changeArchivedTask={changeArchivedTask} changeTaskState={changeStateTask} task={activeTask} deleteTask={deleteTask} updateTask={updateTask}/>}
+                        </DragOverlay>, document.body
+                    )
+                }
+            </DndContext>
+        </div>
+        {user?.id === props.project.createUser.id && 
+        <> 
             <p className="select-title">Ответственный за задачи</p>
             <IconSelect options={options} placeholder={"Выберите отвественного задачи"} handleChange={(selectedItem) => {
                 setCurrentUserId(selectedItem!.value);
@@ -115,32 +214,8 @@ export default function ScrumBoard (props: ScrumBoardType) {
                     setCurrentDateEnd(new Date(e.currentTarget.value));
                 }} type="datetime-local" className="select-wrapper__input" />
             </div>
-            <div className="scrum-board">  
-            <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
-                <div className="scrum-board__wrapper">
-                    <div className="scrum-board__container">
-                       <SortableContext items={columnsId}>
-                        {columns.map(col => 
-                                <ColumnContainer changeArchivedTask={changeArchivedTask} changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === col.id)} key={col.id} column={col} 
-                                deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} deleteTask={deleteTask} 
-                                updateTask={updateTask}/>
-                            )}
-                       </SortableContext>
-                    </div>
-                   <ScrumBoardAddBtn btnText="Добавить колонку" onClickFunction={createNewColumn}/>
-                </div>
-                {
-                    createPortal(
-                        <DragOverlay>
-                            {activeColumn && <ColumnContainer changeArchivedTask={changeArchivedTask} changeStateTask={changeStateTask} tasks={tasks.filter(task => task.scrumBoardColumnId === activeColumn.id)} 
-                            column={activeColumn} deleteColumn={deleteColumn} updateColumn={updateColumn} createTask={createTask} 
-                            deleteTask={deleteTask} updateTask={updateTask}/> }
-                            {activeTask && <TaskCard changeArchivedTask={changeArchivedTask} changeTaskState={changeStateTask} task={activeTask} deleteTask={deleteTask} updateTask={updateTask}/>}
-                        </DragOverlay>, document.body
-                    )
-                }
-            </DndContext>
-        </div>   
+        </>
+        }
         </>
     )
 
@@ -154,7 +229,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         setDisableColumnUpdate(true);
 
-        axios.post<ColumnType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnAdd/', columnToAdd, 
+        axios.post<ColumnType>(process.env.REACT_APP_SERVER_HOST + '/api/Board/ColumnAdd/', columnToAdd, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -172,7 +247,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
     function deleteColumn(columnId: Id) {
         const filteredColumns = columns.filter(col => col.id !== columnId);
 
-        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnDelete/' + columnId, 
+        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/Board/ColumnDelete/' + columnId, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -236,7 +311,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         updatedColumn!.name = name;
 
-        axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/ColumnUpdate/', updatedColumn, 
+        axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Board/ColumnUpdate/', updatedColumn, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -272,10 +347,11 @@ export default function ScrumBoard (props: ScrumBoardType) {
             dateTimeCreated: new Date(),
             priorityIndex: currentPriority,
             dateTimeEnd: currentDateEnd,
-            isArchived: false
+            isArchived: false,
+            createUserTaskId: user!.id
         }
     
-        axios.post<TaskType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskAdd/', scrumBoardTask, 
+        axios.post<TaskType>(process.env.REACT_APP_SERVER_HOST + '/api/Board/TaskAdd/', scrumBoardTask, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -292,7 +368,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
     function deleteTask(taskId: Id) {
         const newTasks = tasks.filter((task) => task.id !== taskId);
 
-        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskDelete/' + taskId, 
+        axios.delete(process.env.REACT_APP_SERVER_HOST + '/api/Board/TaskDelete/' + taskId, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -318,7 +394,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
 
         updatedTask!.content = content;
 
-        axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', updatedTask, 
+        axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Board/TaskUpdate/', updatedTask, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -377,7 +453,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
             else
                 currentTask.isDone = true;
 
-            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', currentTask, 
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Board/TaskUpdate/', currentTask, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -406,7 +482,7 @@ export default function ScrumBoard (props: ScrumBoardType) {
         if(currentTask) {
             currentTask.isArchived = true;
 
-            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', currentTask, 
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Board/TaskUpdate/', currentTask, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token

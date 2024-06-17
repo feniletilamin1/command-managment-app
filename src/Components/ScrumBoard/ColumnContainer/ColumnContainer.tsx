@@ -6,6 +6,7 @@ import { useMemo, useRef, useState } from 'react';
 import ScrumBoardAddBtn from '../ScrumBoardAddBtn/ScrumBoardAddBtn';
 import TaskCard from '../TaskCard/TaskCard';
 import ScrumBoardDeleteBtn from '../ScrumBoardDeleteBtn';
+import { useAppSelector } from '../../../app/hook';
 
 type ColumnContainerProps = {
     column: ColumnType,
@@ -17,12 +18,14 @@ type ColumnContainerProps = {
     changeStateTask: (taskId: Id) => void,
     changeArchivedTask: (taskId: Id) => void,
     tasks: TaskType[],
+    createProjectUserId: number,
 }
 
 export default function ColumnContainer (props: ColumnContainerProps) {
-    const { column, deleteColumn, updateColumn, createTask, tasks, deleteTask, updateTask, changeStateTask, changeArchivedTask} = props;
+    const {createProjectUserId, column, deleteColumn, updateColumn, createTask, tasks, deleteTask, updateTask, changeStateTask, changeArchivedTask} = props;
     const [editMode, setEditMode] = useState<boolean>(false);
     const columnInputName = useRef<HTMLInputElement | null>(null);
+    const { user } = useAppSelector((state) => state.user);
     
     const tasksIds = useMemo(() => { 
         return tasks.map(task => task.id);
@@ -54,7 +57,11 @@ export default function ColumnContainer (props: ColumnContainerProps) {
             <div className="scrum-board__column-wrapper" {...attributes} {...listeners}>
                 <div className="scrum-board__column-info-wrapper">
                     <span className="scrum-board__column-tasks-counter">{tasks.length}</span>
-                    <h2 onClick={() => {setEditMode(true)}} className="scrum-board__column-title">
+                    <h2 onClick={() => {
+                        if(createProjectUserId === user?.id) {
+                            setEditMode(true)
+                        }
+                    }} className="scrum-board__column-title">
                         {!editMode && column.name}
                         {editMode && <input ref={columnInputName} className="scrum-board__update-title-input" 
                             defaultValue={column.name} autoFocus onBlur={() => setEditMode(false)} onKeyDown={(e) => {
@@ -71,7 +78,7 @@ export default function ColumnContainer (props: ColumnContainerProps) {
                         }}/>}
                     </h2>
                 </div>
-                <ScrumBoardDeleteBtn deleteFunction={() => deleteColumn(column.id)} />
+                {createProjectUserId === user?.id && <ScrumBoardDeleteBtn deleteFunction={() => deleteColumn(column.id)} />}
             </div>
             <div className="scrum-board__column-content">
                 <SortableContext items={tasksIds}>
@@ -81,7 +88,7 @@ export default function ColumnContainer (props: ColumnContainerProps) {
                 </SortableContext>
             </div>
             <div className="scrum-board__column-footer">
-                <ScrumBoardAddBtn isSmall={true} btnText="Добавить задачу" onClickFunction={() => createTask(column.id)}  />         
+                {createProjectUserId === user?.id && <ScrumBoardAddBtn isSmall={true} btnText="Добавить задачу" onClickFunction={() => createTask(column.id)}  />}    
             </div>
         </div>
     )

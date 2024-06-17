@@ -26,7 +26,7 @@ export default function ScrumBoardPage() {
             return;
         }
         
-        axios.get<ScrumBoardType>(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/GetScrumBoard/'+ scrumBoardId, 
+        axios.get<ScrumBoardType>(process.env.REACT_APP_SERVER_HOST + '/api/Board/GetScrumBoard/'+ scrumBoardId, 
         {
             headers: {
                 'Authorization': 'Bearer ' + token

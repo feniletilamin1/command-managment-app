@@ -43,13 +43,13 @@ export default function ArchivedTasksPage() {
         if(currentTask) {
             currentTask.isArchived = false;
 
-            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/ScrumBoard/TaskUpdate/', currentTask, 
+            axios.put(process.env.REACT_APP_SERVER_HOST + '/api/Board/TaskUpdate/', currentTask, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
             })
-            .then(function () {
+            .then(function () { 
                 const newTasks: TaskType[] = tasks.filter(task => task.id !== taskId);
                 setTasks(newTasks);
             })

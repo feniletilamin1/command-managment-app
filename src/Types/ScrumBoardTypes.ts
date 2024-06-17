@@ -1,4 +1,4 @@
-import { UserType } from "./ModelsType";
+import { ProjectType, UserType } from "./ModelsType";
 
 export type Id = string | number;
 
@@ -21,11 +21,14 @@ export type TaskType = {
     priorityIndex: number,
     dateTimeEnd: Date,
     isArchived: boolean,
+    createUserTaskId: number,
+    createUserTask?: UserType
 }
 
 export type ScrumBoardType = {
     id: number,
     scrumBoardColumns: ColumnType[],
     scrumBoardTasks: TaskType[],
-    teamUsers: UserType[]
+    teamUsers: UserType[],
+    project: ProjectType,
 }
